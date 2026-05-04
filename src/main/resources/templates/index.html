@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ClinicSoft</title>
+</head>
+
+<body>
+    <h1>ClinicSoft</h1>
+    <p>Proyecto de gestion de una clinica medica</p>
+
+    <nav>
+        <a th:href="@{/pacientes}">Pacientes</a> |
+        <a th:href="@{/medicos}">Medicos</a> |
+        <a th:href="@{/citas}">Citas</a>
+    </nav>
+
+    <hr>
+
+    <h2>Resumen inicial</h2>
+    <ul>
+        <li>Pacientes registrados: <span th:text="${numeroPacientes}">0</span></li>
+        <li>Medicos registrados: <span th:text="${numeroMedicos}">0</span></li>
+        <li>Citas creadas: <span th:text="${numeroCitas}">0</span></li>
+    </ul>
+</body>
+
+</html>

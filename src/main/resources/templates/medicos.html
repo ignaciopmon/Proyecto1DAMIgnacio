@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Medicos</title>
+</head>
+
+<body>
+    <h1>Medicos</h1>
+
+    <p><a th:href="@{/inicio}">Volver al inicio</a></p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Especialidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="medico : ${medicos}">
+                <td th:text="${medico.idMedico}">M001</td>
+                <td th:text="${medico.nombre}">Nombre</td>
+                <td th:text="${medico.especialidad}">Especialidad</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
