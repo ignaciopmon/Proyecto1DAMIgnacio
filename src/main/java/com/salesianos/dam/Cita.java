@@ -3,7 +3,9 @@ package com.salesianos.dam;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,14 +18,17 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Cita {
 
-    @Id
+    @Id @GeneratedValue
     private String codCita;
     private LocalDateTime fecha;
     private int duracionMinutos;
     private double precio;
     private String estado;
     private String observaciones;
-    private String idPaciente;
-    private String idMedico;
+    
+    @ManyToOne
+    private Paciente paciente;
+    @ManyToOne
+    private Medico medico;
 
 }

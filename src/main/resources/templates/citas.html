@@ -9,7 +9,7 @@
 <body>
     <h1>Citas</h1>
 
-    <p><a th:href="@{/inicio}">Volver al inicio</a></p>
+    <div th:replace="fragments/indexreturn::indexreturn"></div>
 
     <table border="1">
         <thead>
@@ -28,11 +28,11 @@
             <tr th:each="cita : ${citas}">
                 <td th:text="${cita.codCita}">C001</td>
                 <td th:text="${cita.fecha}">fecha</td>
-                <td th:text="${cita.duracionMinutos} minutos">30 minutos</td>
-                <td th:text="${cita.precio} euros">35 euros</td>
+                <td th:text="|${cita.duracionMinutos} minutos|">30 minutos</td>
+                <td th:text="|${cita.precio} euros|">35 euros</td>
                 <td th:text="${cita.estado}">PENDIENTE</td>
-                <td th:text="${cita.idPaciente} ?: 'Sin paciente'">P001</td>
-                <td th:text="${cita.idMedico}">M001</td>
+                <td th:text="${cita.paciente != null} ? ${cita.paciente.nombre} : 'Sin paciente'">P001</td>
+                <td th:text="${cita.medico.nombre}">M001</td>
                 <td th:text="${cita.observaciones}">Observaciones</td>
             </tr>
         </tbody>
