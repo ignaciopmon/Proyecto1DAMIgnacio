@@ -1,20 +1,54 @@
 package com.salesianos.dam.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import com.salesianos.dam.Medico;
 
-import com.salesianos.dam.service.ClinicService;
+import com.salesianos.dam.service.MedicoService;
 
 @Controller
 public class MedicosController {
     @Autowired
-    private ClinicService clinicService;
+    private MedicoService medicoService;
 
     @GetMapping("/medicos")
     public String medicos(Model model) {
-        model.addAttribute("medicos", clinicService.getMedicos());
+        model.addAttribute("medicos", medicoService.findAll());
         return "medicos";
+    }
+
+    @GetMapping("/medicos/nuevo")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("medico", new Medico());
+        return "formulario-medico";
+    }
+
+    @PostMapping("/medicos/nuevo/submit")
+    public String procesarFormulario(@ModelAttribute("medico") Medico medico) {
+        medicoService.save(medico);
+        return "redirect:/medicos";
+    }
+
+    @GetMapping("/medicos/editar/{id}")
+    public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model) {
+        Optional<Medico> medico = medicoService.findById(id);
+        if (medico.isPresent()) {
+            model.addAttribute("medico", medico.get());
+            return "formulario-medico";
+        }
+        return "redirect:/medicos";
+    }
+
+    @GetMapping("/medicos/eliminar/{id}")
+    public String eliminarMedico(@PathVariable("id") Long id) {
+        medicoService.deleteById(id);
+        return "redirect:/medicos";
     }
 }

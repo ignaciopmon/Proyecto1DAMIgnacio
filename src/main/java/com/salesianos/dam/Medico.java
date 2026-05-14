@@ -1,6 +1,7 @@
 package com.salesianos.dam;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Medico {
 
     @Id @GeneratedValue
-    private String idMedico;
+    private Long id;
     private String especialidad;
     private String nombre;
 

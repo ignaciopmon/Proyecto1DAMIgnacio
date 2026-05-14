@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Paciente {
 
     @Id @GeneratedValue
-    private String idPaciente;
+    private Long id;
     private String nombre;
     private String email;
     private String telefono;

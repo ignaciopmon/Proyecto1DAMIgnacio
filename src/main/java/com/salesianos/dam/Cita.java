@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Cita {
 
     @Id @GeneratedValue
-    private String codCita;
+    private Long id;
     private LocalDateTime fecha;
     private int duracionMinutos;
     private double precio;

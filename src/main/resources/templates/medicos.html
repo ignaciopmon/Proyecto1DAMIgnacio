@@ -12,19 +12,29 @@
 
     <div th:replace="fragments/indexreturn::indexreturn"></div>
 
+    <div class="mb-3">
+        <a href="/medicos/nuevo" class="btn btn-primary">Añadir Médico</a>
+    </div>
+
     <table class="table">
         <thead>
             <tr>
-                <th>Codigo</th>
+                <th>ID</th>
                 <th>Nombre</th>
                 <th>Especialidad</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="medico : ${medicos}">
-                <td th:text="${medico.idMedico}">M001</td>
+                <td th:text="${medico.id}">1</td>
                 <td th:text="${medico.nombre}">Nombre</td>
                 <td th:text="${medico.especialidad}">Especialidad</td>
+                <td>
+                    <a th:href="@{/medicos/editar/{id}(id=${medico.id})}" class="btn btn-sm btn-warning">Editar</a>
+                    <a th:href="@{/medicos/eliminar/{id}(id=${medico.id})}" class="btn btn-sm btn-danger"
+                       onclick="return confirm('¿Estás seguro de que quieres eliminar este médico?')">Eliminar</a>
+                </td>
             </tr>
         </tbody>
     </table>
