@@ -38,8 +38,8 @@
                 <td th:text="|${cita.duracionMinutos} minutos|">30 minutos</td>
                 <td th:text="|${cita.precio} euros|">35 euros</td>
                 <td>
-                    <form th:action="@{'/citas/' + ${cita.id} + '/estado'}" method="post" style="margin:0">
-                        <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <form th:action="@{'/citas/' + ${cita.id} + '/estado'}" method="post" style="margin:0" class="d-flex gap-1">
+                        <select name="estado" class="form-select form-select-sm" onchange="form.submit()">
                             <option th:each="est : ${estados}"
                                     th:value="${est}"
                                     th:text="${#strings.replace(est.toString(), '_', ' ')}"
@@ -59,6 +59,7 @@
             </tr>
         </tbody>
     </table>
+
 </body>
 
 </html>
