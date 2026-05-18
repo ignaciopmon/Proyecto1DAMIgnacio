@@ -1,6 +1,9 @@
 package com.salesianos.dam.service;
 
+import org.springframework.stereotype.Service;
 import com.salesianos.dam.Medico;
+import com.salesianos.dam.repository.MedicoRepository;
 
-public interface MedicoService extends BaseService<Medico, Long> {
+@Service
+public class MedicoServiceImpl extends BaseServiceImpl<Medico, Long, MedicoRepository> implements MedicoService {
 }
