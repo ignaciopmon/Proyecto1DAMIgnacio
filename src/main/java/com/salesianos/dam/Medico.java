@@ -24,6 +24,8 @@ public class Medico {
     private Long id;
     private String especialidad;
     private String nombre;
+    @Builder.Default
+    private Integer duracionCitaMinutos = 30;
 
     @Builder.Default
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "medico")

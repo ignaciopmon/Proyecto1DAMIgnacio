@@ -10,23 +10,51 @@
 <body class="container mt-4">
     <h1 th:text="${cita.id != null} ? 'Editar Cita' : 'Nueva Cita'">Nueva Cita</h1>
 
+    <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+
     <form th:action="@{/citas/guardar}" th:object="${cita}" method="post" class="mt-4">
         <input type="hidden" th:field="*{id}">
 
         <div class="mb-3">
-            <label for="fecha" class="form-label">Fecha y Hora</label>
-            <input type="datetime-local" id="fecha" name="fecha" 
-                   th:value="${cita.fecha != null ? #temporals.format(cita.fecha, 'yyyy-MM-dd''T''HH:mm') : ''}" 
-                   class="form-control" required>
+            <label for="medicoId" class="form-label">Medico</label>
+            <select id="medicoId" name="medicoId" class="form-select" required onchange="actualizarHoras()">
+                <option value="">-- Seleccionar medico --</option>
+                <option th:each="medico : ${medicos}"
+                        th:value="${medico.id}"
+                        th:text="${medico.nombre + ' - ' + medico.especialidad + ' (' + (medico.duracionCitaMinutos ?: 30) + ' min)'}"
+                        th:selected="${medicoSeleccionadoId != null and medicoSeleccionadoId == medico.id}">
+                </option>
+            </select>
         </div>
 
         <div class="mb-3">
-            <label for="duracionMinutos" class="form-label">Duración (minutos)</label>
-            <input type="number" id="duracionMinutos" th:field="*{duracionMinutos}" class="form-control" required>
+            <label for="fechaDia" class="form-label">Dia</label>
+            <input type="date" id="fechaDia" name="fechaDia"
+                   th:value="${fechaDiaSeleccionada}"
+                   class="form-control" required onchange="actualizarHoras()">
         </div>
 
         <div class="mb-3">
-            <label for="precio" class="form-label">Precio (€)</label>
+            <label for="hora" class="form-label">Hora disponible</label>
+            <select id="hora" name="hora" class="form-select" required
+                    th:disabled="${horasDisponibles == null or #lists.isEmpty(horasDisponibles)}">
+                <option value="">-- Seleccionar hora --</option>
+                <option th:each="horaDisponible : ${horasDisponibles}"
+                        th:value="${horaDisponible}"
+                        th:text="${#temporals.format(horaDisponible, 'HH:mm')}"
+                        th:selected="${horaSeleccionada != null and horaSeleccionada == horaDisponible}">
+                </option>
+            </select>
+            <div class="form-text" th:if="${medicoSeleccionadoId == null or fechaDiaSeleccionada == null}">
+                Elige medico y dia para ver las horas libres.
+            </div>
+            <div class="form-text" th:if="${medicoSeleccionadoId != null and fechaDiaSeleccionada != null and (horasDisponibles == null or #lists.isEmpty(horasDisponibles))}">
+                No quedan horas libres para ese medico y ese dia.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
             <input type="number" step="0.01" id="precio" th:field="*{precio}" class="form-control" required>
         </div>
 
@@ -46,18 +74,6 @@
         </div>
 
         <div class="mb-3">
-            <label for="medicoId" class="form-label">Médico</label>
-            <select id="medicoId" name="medicoId" class="form-select" required>
-                <option value="">-- Seleccionar médico --</option>
-                <option th:each="medico : ${medicos}"
-                        th:value="${medico.id}"
-                        th:text="${medico.nombre} + ' - ' + ${medico.especialidad}"
-                        th:selected="${cita.medico != null and cita.medico.id == medico.id}">
-                </option>
-            </select>
-        </div>
-
-        <div class="mb-3">
             <label for="pacienteId" class="form-label">Paciente</label>
             <select id="pacienteId" name="pacienteId" class="form-select">
                 <option value="">-- Sin paciente --</option>
@@ -72,6 +88,20 @@
         <button type="submit" class="btn btn-success">Guardar Cita</button>
         <a href="/citas" class="btn btn-secondary">Cancelar</a>
     </form>
+
+    <script>
+        function actualizarHoras() {
+            const medicoId = document.getElementById('medicoId').value;
+            const fechaDia = document.getElementById('fechaDia').value;
+
+            if (medicoId && fechaDia) {
+                const url = new URL(window.location.href);
+                url.searchParams.set('medicoId', medicoId);
+                url.searchParams.set('fechaDia', fechaDia);
+                window.location.href = url.toString();
+            }
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
