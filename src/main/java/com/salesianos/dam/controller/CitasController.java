@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianos.dam.Cita;
+import com.salesianos.dam.enums.EstadosCita;
 import com.salesianos.dam.service.CitaService;
 import com.salesianos.dam.service.MedicoService;
 import com.salesianos.dam.service.PacienteService;
@@ -29,6 +30,7 @@ public class CitasController {
     @GetMapping("/citas")
     public String citas(Model model) {
         model.addAttribute("citas", citaService.findAll());
+        model.addAttribute("estados", EstadosCita.values());
         return "citas";
     }
 
@@ -37,6 +39,7 @@ public class CitasController {
         model.addAttribute("cita", new Cita());
         model.addAttribute("medicos", medicoService.findAll());
         model.addAttribute("pacientes", pacienteService.findAll());
+        model.addAttribute("estados", EstadosCita.values());
         return "formulario-cita";
     }
 
@@ -61,12 +64,23 @@ public class CitasController {
         model.addAttribute("cita", cita);
         model.addAttribute("medicos", medicoService.findAll());
         model.addAttribute("pacientes", pacienteService.findAll());
+        model.addAttribute("estados", EstadosCita.values());
         return "formulario-cita";
     }
 
     @GetMapping("/citas/eliminar/{id}")
     public String deleteCita(@PathVariable Long id) {
         citaService.deleteById(id);
+        return "redirect:/citas";
+    }
+
+    @PostMapping("/citas/{id}/estado")
+    public String updateEstado(@PathVariable Long id,
+                               @RequestParam("estado") EstadosCita estado) {
+        citaService.findById(id).ifPresent(cita -> {
+            cita.setEstado(estado);
+            citaService.save(cita);
+        });
         return "redirect:/citas";
     }
 }

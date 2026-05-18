@@ -33,10 +33,10 @@
         <div class="mb-3">
             <label for="estado" class="form-label">Estado</label>
             <select id="estado" th:field="*{estado}" class="form-select" required>
-                <option value="PENDIENTE">PENDIENTE</option>
-                <option value="DISPONIBLE">DISPONIBLE</option>
-                <option value="REALIZADA">REALIZADA</option>
-                <option value="NO_PRESENTADO">NO PRESENTADO</option>
+                <option th:each="est : ${estados}"
+                        th:value="${est}"
+                        th:text="${#strings.replace(est.toString(), '_', ' ')}">
+                </option>
             </select>
         </div>
 
