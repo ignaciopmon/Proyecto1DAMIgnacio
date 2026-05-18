@@ -33,7 +33,7 @@
         <tbody>
             <tr th:each="cita : ${citas}">
                 <td th:text="${cita.id}">1</td>
-                <td th:text="${cita.fecha}">fecha</td>
+                <td th:text="${#temporals.format(cita.fecha, 'dd/MM/yyyy HH:mm')}">fecha</td>
                 <td th:text="|${cita.duracionMinutos} minutos|">30 minutos</td>
                 <td th:text="|${cita.precio} euros|">35 euros</td>
                 <td th:text="${cita.estado}">PENDIENTE</td>
