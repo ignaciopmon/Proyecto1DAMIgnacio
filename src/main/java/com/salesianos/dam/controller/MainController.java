@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.salesianos.dam.service.PacienteService;
-import com.salesianos.dam.service.MedicoService;
 import com.salesianos.dam.service.CitaService;
+import com.salesianos.dam.service.MedicoService;
+import com.salesianos.dam.service.PacienteService;
 
 @Controller
 public class MainController {
@@ -21,12 +21,18 @@ public class MainController {
     @Autowired
     private CitaService citaService;
 
-    @GetMapping({ "/", "/inicio" })
+    @GetMapping({ "/admin" })
     public String inicio(Model model) {
         model.addAttribute("numeroPacientes", pacienteService.findAll().size());
         model.addAttribute("numeroMedicos", medicoService.findAll().size());
         model.addAttribute("numeroCitas", citaService.findAll().size());
+        return "admin";
+    }
+
+    @GetMapping({ "/", "/index", "/home", "/inicio" })
+    public String index(Model model) {
         return "index";
     }
+
 
 }
