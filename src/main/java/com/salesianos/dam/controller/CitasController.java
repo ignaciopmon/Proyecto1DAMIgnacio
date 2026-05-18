@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianos.dam.Cita;
+import com.salesianos.dam.enums.EstadosCita;
 import com.salesianos.dam.service.CitaService;
 import com.salesianos.dam.service.MedicoService;
 import com.salesianos.dam.service.PacienteService;
@@ -29,7 +30,29 @@ public class CitasController {
     @GetMapping("/citas")
     public String citas(Model model) {
         model.addAttribute("citas", citaService.findAll());
+        model.addAttribute("estados", EstadosCita.values());
         return "citas";
+    }
+
+    @GetMapping("/citas/nueva")
+    public String showNewCitaForm(Model model) {
+        model.addAttribute("cita", new Cita());
+        model.addAttribute("medicos", medicoService.findAll());
+        model.addAttribute("pacientes", pacienteService.findAll());
+        model.addAttribute("estados", EstadosCita.values());
+        return "formulario-cita";
+    }
+
+    @PostMapping("/citas/guardar")
+    public String saveCita(@ModelAttribute("cita") Cita cita,
+                           @RequestParam("medicoId") Long medicoId,
+                           @RequestParam(value = "pacienteId", required = false) Long pacienteId) {
+        cita.setMedico(medicoService.findById(medicoId).orElse(null));
+        if (pacienteId != null) {
+            cita.setPaciente(pacienteService.findById(pacienteId).orElse(null));
+        }
+        citaService.save(cita);
+        return "redirect:/citas";
     }
 
     @GetMapping("/citas/editar/{id}")
@@ -41,25 +64,23 @@ public class CitasController {
         model.addAttribute("cita", cita);
         model.addAttribute("medicos", medicoService.findAll());
         model.addAttribute("pacientes", pacienteService.findAll());
-        return "editar-cita";
-    }
-
-    @PostMapping("/citas/editar/{id}")
-    public String editCita(@PathVariable Long id, @ModelAttribute("cita") Cita cita,
-                           @RequestParam("medicoId") Long medicoId,
-                           @RequestParam(value = "pacienteId", required = false) Long pacienteId) {
-        cita.setId(id);
-        cita.setMedico(medicoService.findById(medicoId).orElse(null));
-        if (pacienteId != null) {
-            cita.setPaciente(pacienteService.findById(pacienteId).orElse(null));
-        }
-        citaService.save(cita);
-        return "redirect:/citas";
+        model.addAttribute("estados", EstadosCita.values());
+        return "formulario-cita";
     }
 
     @GetMapping("/citas/eliminar/{id}")
     public String deleteCita(@PathVariable Long id) {
         citaService.deleteById(id);
+        return "redirect:/citas";
+    }
+
+    @PostMapping("/citas/{id}/estado")
+    public String updateEstado(@PathVariable Long id,
+                               @RequestParam("estado") EstadosCita estado) {
+        citaService.findById(id).ifPresent(cita -> {
+            cita.setEstado(estado);
+            citaService.save(cita);
+        });
         return "redirect:/citas";
     }
 }

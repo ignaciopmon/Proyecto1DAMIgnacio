@@ -1,6 +1,10 @@
 package com.salesianos.dam.service;
 
-import com.salesianos.dam.Paciente;
+import org.springframework.stereotype.Service;
 
-public interface PacienteService extends BaseService<Paciente, Long> {
+import com.salesianos.dam.Paciente;
+import com.salesianos.dam.repository.PacienteRepository;
+
+@Service
+public class PacienteService extends BaseServiceImpl<Paciente, Long, PacienteRepository> {
 }

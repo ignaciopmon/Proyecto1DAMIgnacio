@@ -1,6 +1,9 @@
 package com.salesianos.dam.service;
 
+import org.springframework.stereotype.Service;
 import com.salesianos.dam.Cita;
+import com.salesianos.dam.repository.CitaRepository;
 
-public interface CitaService extends BaseService<Cita, Long> {
+@Service
+public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
 }
