@@ -31,8 +31,8 @@
                 <td th:text="${medico.nombre}">Nombre</td>
                 <td th:text="${medico.especialidad}">Especialidad</td>
                 <td>
-                    <a th:href="@{/medicos/editar/{id}(id=${medico.id})}" class="btn btn-sm btn-warning">Editar</a>
-                    <a th:href="@{/medicos/eliminar/{id}(id=${medico.id})}" class="btn btn-sm btn-danger"
+                    <a th:href="@{'/medicos/editar/' + ${medico.id}}" class="btn btn-sm btn-warning">Editar</a>
+                    <a th:href="@{'/medicos/eliminar/' + ${medico.id}}" class="btn btn-sm btn-danger"
                        onclick="return confirm('¿Estás seguro de que quieres eliminar este médico?')">Eliminar</a>
                 </td>
             </tr>

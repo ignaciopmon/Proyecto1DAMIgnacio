@@ -10,7 +10,7 @@
 <body class="container mt-4">
     <h1>Editar Cita</h1>
 
-    <form th:action="@{/citas/editar/{id}(id=${cita.id})}" th:object="${cita}" method="post" class="mt-4">
+    <form th:action="@{'/citas/editar/' + ${cita.id}}" th:object="${cita}" method="post" class="mt-4">
 
         <div class="mb-3">
             <label for="fecha" class="form-label">Fecha y Hora</label>

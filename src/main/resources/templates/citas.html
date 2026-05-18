@@ -37,8 +37,8 @@
                 <td th:text="${cita.medico != null} ? ${cita.medico.nombre} : 'Sin médico'">M001</td>
                 <td th:text="${cita.observaciones}">Observaciones</td>
                 <td>
-                    <a th:href="@{/citas/editar/{id}(id=${cita.id})}" class="btn btn-sm btn-warning">Editar</a>
-                    <a th:href="@{/citas/eliminar/{id}(id=${cita.id})}" class="btn btn-sm btn-danger"
+                    <a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-sm btn-warning">Editar</a>
+                    <a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-sm btn-danger"
                        onclick="return confirm('¿Estás seguro de que quieres eliminar esta cita?')">Eliminar</a>
                 </td>
             </tr>
