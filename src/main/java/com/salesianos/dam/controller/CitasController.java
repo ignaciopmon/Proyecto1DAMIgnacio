@@ -32,6 +32,26 @@ public class CitasController {
         return "citas";
     }
 
+    @GetMapping("/citas/nueva")
+    public String showNewCitaForm(Model model) {
+        model.addAttribute("cita", new Cita());
+        model.addAttribute("medicos", medicoService.findAll());
+        model.addAttribute("pacientes", pacienteService.findAll());
+        return "formulario-cita";
+    }
+
+    @PostMapping("/citas/guardar")
+    public String saveCita(@ModelAttribute("cita") Cita cita,
+                           @RequestParam("medicoId") Long medicoId,
+                           @RequestParam(value = "pacienteId", required = false) Long pacienteId) {
+        cita.setMedico(medicoService.findById(medicoId).orElse(null));
+        if (pacienteId != null) {
+            cita.setPaciente(pacienteService.findById(pacienteId).orElse(null));
+        }
+        citaService.save(cita);
+        return "redirect:/citas";
+    }
+
     @GetMapping("/citas/editar/{id}")
     public String showEditCitaForm(@PathVariable Long id, Model model) {
         Cita cita = citaService.findById(id).orElse(null);
@@ -41,20 +61,7 @@ public class CitasController {
         model.addAttribute("cita", cita);
         model.addAttribute("medicos", medicoService.findAll());
         model.addAttribute("pacientes", pacienteService.findAll());
-        return "editar-cita";
-    }
-
-    @PostMapping("/citas/editar/{id}")
-    public String editCita(@PathVariable Long id, @ModelAttribute("cita") Cita cita,
-                           @RequestParam("medicoId") Long medicoId,
-                           @RequestParam(value = "pacienteId", required = false) Long pacienteId) {
-        cita.setId(id);
-        cita.setMedico(medicoService.findById(medicoId).orElse(null));
-        if (pacienteId != null) {
-            cita.setPaciente(pacienteService.findById(pacienteId).orElse(null));
-        }
-        citaService.save(cita);
-        return "redirect:/citas";
+        return "formulario-cita";
     }
 
     @GetMapping("/citas/eliminar/{id}")
