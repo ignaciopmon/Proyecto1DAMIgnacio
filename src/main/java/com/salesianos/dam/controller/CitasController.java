@@ -32,6 +32,7 @@ public class CitasController {
     @Autowired
     private PacienteService pacienteService;
 
+
     @GetMapping("/citas")
     public String citas(Model model) {
         model.addAttribute("citas", citaService.findAll());
@@ -39,12 +40,22 @@ public class CitasController {
         return "citas";
     }
 
+
+
     @GetMapping("/citas/nueva")
-    public String showNewCitaForm(Model model,
-                                  @RequestParam(value = "medicoId", required = false) Long medicoId,
-                                  @RequestParam(value = "fechaDia", required = false) LocalDate fechaDia) {
-        return cargarFormularioCita(model, new Cita(), medicoId, fechaDia, null, null);
+    public String showPaso1(Model model) {
+        model.addAttribute("medicos", medicoService.findAll());
+        return "formulario-cita";
     }
+
+
+    @GetMapping("/citas/paso2")
+    public String showPaso2(Model model,
+                            @RequestParam Long medicoId,
+                            @RequestParam LocalDate fechaDia) {
+        return cargarPaso2(model, new Cita(), medicoId, fechaDia, null, null);
+    }
+
 
     @PostMapping("/citas/guardar")
     public String saveCita(@ModelAttribute("cita") Cita cita,
@@ -53,14 +64,15 @@ public class CitasController {
                            @RequestParam("fechaDia") LocalDate fechaDia,
                            @RequestParam("hora") LocalTime hora,
                            @RequestParam(value = "pacienteId", required = false) Long pacienteId) {
+
         Medico medico = medicoService.findById(medicoId).orElse(null);
 
         if (medico == null) {
-            return cargarFormularioCita(model, cita, medicoId, fechaDia, hora, "Selecciona un medico valido");
+            return cargarPaso2(model, cita, medicoId, fechaDia, hora, "Selecciona un médico válido.");
         }
 
         if (!citaService.horaDisponible(medico, fechaDia, hora, cita.getId())) {
-            return cargarFormularioCita(model, cita, medicoId, fechaDia, hora, "Esa hora ya esta ocupada");
+            return cargarPaso2(model, cita, medicoId, fechaDia, hora, "Esa hora ya está ocupada.");
         }
 
         cita.setMedico(medico);
@@ -70,37 +82,33 @@ public class CitasController {
         if (pacienteId != null) {
             cita.setPaciente(pacienteService.findById(pacienteId).orElse(null));
         }
+
         citaService.save(cita);
         return "redirect:/citas";
     }
 
+
     @GetMapping("/citas/editar/{id}")
-    public String showEditCitaForm(@PathVariable Long id,
-                                   Model model,
-                                   @RequestParam(value = "medicoId", required = false) Long medicoId,
-                                   @RequestParam(value = "fechaDia", required = false) LocalDate fechaDia) {
+    public String showEditCitaForm(@PathVariable Long id, Model model) {
         Cita cita = citaService.findById(id).orElse(null);
         if (cita == null) {
             return "redirect:/citas";
         }
 
-        if (medicoId == null && cita.getMedico() != null) {
-            medicoId = cita.getMedico().getId();
-        }
-
-        if (fechaDia == null && cita.getFecha() != null) {
-            fechaDia = cita.getFecha().toLocalDate();
-        }
-
+        Long medicoId = cita.getMedico() != null ? cita.getMedico().getId() : null;
+        LocalDate fechaDia = cita.getFecha() != null ? cita.getFecha().toLocalDate() : null;
         LocalTime hora = cita.getFecha() != null ? cita.getFecha().toLocalTime() : null;
-        return cargarFormularioCita(model, cita, medicoId, fechaDia, hora, null);
+
+        return cargarPaso2(model, cita, medicoId, fechaDia, hora, null);
     }
+
 
     @GetMapping("/citas/eliminar/{id}")
     public String deleteCita(@PathVariable Long id) {
         citaService.deleteById(id);
         return "redirect:/citas";
     }
+
 
     @PostMapping("/citas/{id}/estado")
     public String updateEstado(@PathVariable Long id,
@@ -112,22 +120,25 @@ public class CitasController {
         return "redirect:/citas";
     }
 
-    private String cargarFormularioCita(Model model, Cita cita, Long medicoId, LocalDate fechaDia, LocalTime hora, String error) {
+
+    private String cargarPaso2(Model model, Cita cita, Long medicoId, LocalDate fechaDia,
+                                LocalTime horaSeleccionada, String error) {
         model.addAttribute("cita", cita);
-        model.addAttribute("medicos", medicoService.findAll());
-        model.addAttribute("pacientes", pacienteService.findAll());
+        model.addAttribute("medicoId", medicoId);
+        model.addAttribute("fechaDia", fechaDia);
         model.addAttribute("estados", EstadosCita.values());
-        model.addAttribute("medicoSeleccionadoId", medicoId);
-        model.addAttribute("fechaDiaSeleccionada", fechaDia);
-        model.addAttribute("horaSeleccionada", hora);
+        model.addAttribute("pacientes", pacienteService.findAll());
+        model.addAttribute("horaSeleccionada", horaSeleccionada);
         model.addAttribute("error", error);
 
         if (medicoId != null && fechaDia != null) {
-            medicoService.findById(medicoId).ifPresent(medico ->
-                    model.addAttribute("horasDisponibles",
-                            citaService.obtenerHorasDisponibles(medico, fechaDia, cita.getId())));
+            medicoService.findById(medicoId).ifPresent(medico -> {
+                model.addAttribute("medico", medico);
+                model.addAttribute("horasDisponibles",
+                        citaService.obtenerHorasDisponibles(medico, fechaDia, cita.getId()));
+            });
         }
 
-        return "formulario-cita";
+        return "formulario-cita-paso2";
     }
 }
