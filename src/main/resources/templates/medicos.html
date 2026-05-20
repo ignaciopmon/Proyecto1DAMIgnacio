@@ -32,8 +32,10 @@
                 <td th:text="${medico.especialidad}">Especialidad</td>
                 <td>
                     <a th:href="@{'/medicos/editar/' + ${medico.id}}" class="btn btn-sm btn-warning">Editar</a>
-                    <a th:href="@{'/medicos/eliminar/' + ${medico.id}}" class="btn btn-sm btn-danger"
-                       onclick="return confirm('¿Estás seguro de que quieres eliminar este médico?')">Eliminar</a>
+                    <form th:action="@{'/medicos/eliminar/' + ${medico.id}}" method="post" class="d-inline"
+                        onsubmit="return confirm('¿Estás seguro de que quieres eliminar este médico?')">
+                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
