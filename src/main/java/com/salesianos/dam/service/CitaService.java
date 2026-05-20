@@ -15,7 +15,7 @@ import com.salesianos.dam.repository.CitaRepository;
 public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
 
     private static final LocalTime HORA_INICIO_CONSULTA = LocalTime.of(9, 0);
-    private static final LocalTime HORA_FIN_CONSULTA = LocalTime.of(14, 0);
+    private static final LocalTime HORA_FIN_CONSULTA = LocalTime.of(18, 0);
 
     public List<Cita> findCitasDelDia(Long medicoId, LocalDate fecha) {
         LocalDateTime inicioDia = fecha.atStartOfDay();
@@ -52,7 +52,7 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
 
             int duracionExistente = cita.getDuracionMinutos();
             if (duracionExistente <= 0) {
-                duracionExistente = duracionNueva;
+            	duracionExistente = duracionNueva;
             }
 
             LocalDateTime inicioExistente = cita.getFecha();
