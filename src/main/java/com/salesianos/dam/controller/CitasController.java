@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.salesianos.dam.Cita;
 import com.salesianos.dam.Medico;
 import com.salesianos.dam.enums.EstadosCita;
+import com.salesianos.dam.exception.CitaDuplicadaException;
 import com.salesianos.dam.exception.CitaSolapadaException;
 import com.salesianos.dam.service.CitaService;
 import com.salesianos.dam.service.MedicoService;
@@ -82,7 +83,7 @@ public class CitasController {
 
         try {
             citaService.save(cita);
-        } catch (CitaSolapadaException e) {
+        } catch (CitaSolapadaException | CitaDuplicadaException e) {
             return cargarPaso2(model, cita, medicoId, fechaDia, hora, e.getMessage());
         }
         return "redirect:/citas";
