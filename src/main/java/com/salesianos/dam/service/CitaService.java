@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.salesianos.dam.Cita;
 import com.salesianos.dam.Medico;
+import com.salesianos.dam.exception.CitaDuplicadaException;
 import com.salesianos.dam.exception.CitaSolapadaException;
 import com.salesianos.dam.repository.CitaRepository;
 
@@ -28,8 +29,33 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
             if (!estaLibreExcluyendoCita(cita.getMedico(), fecha, hora, cita.getId())) {
                 throw new CitaSolapadaException();
             }
+
+            if (cita.getPaciente() != null) {
+                if (tieneCitaConMismoMedicoMismoDia(cita.getPaciente().getId(), cita.getMedico().getId(), fecha, cita.getId())) {
+                    throw new CitaDuplicadaException();
+                }
+            }
         }
         return super.save(cita);
+    }
+
+    public boolean tieneCitaConMismoMedicoMismoDia(Long pacienteId, Long medicoId, LocalDate fecha, Long citaIdAExcluir) {
+        LocalDateTime inicio = fecha.atStartOfDay();
+        LocalDateTime fin = fecha.atTime(23, 59, 59);
+        
+        List<Cita> citasDelDia = repository.findByMedicoIdAndFechaBetween(medicoId, inicio, fin);
+        
+        for (Cita cita : citasDelDia) {
+            if (citaIdAExcluir != null && cita.getId().equals(citaIdAExcluir)) {
+                continue;
+            }
+            
+            if (cita.getPaciente() != null && cita.getPaciente().getId().equals(pacienteId)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public List<Cita> getCitasDelDia(Long medicoId, LocalDate fecha) {
