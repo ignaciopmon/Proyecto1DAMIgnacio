@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.salesianos.dam.Cita;
 import com.salesianos.dam.Medico;
+import com.salesianos.dam.exception.CitaSolapadaException;
 import com.salesianos.dam.repository.CitaRepository;
 
 @Service
@@ -17,6 +18,19 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
 
     private static final LocalTime INICIO_CONSULTA = LocalTime.of(9, 0);
     private static final LocalTime FIN_CONSULTA = LocalTime.of(18, 0);
+
+    @Override
+    public Cita save(Cita cita) {
+        if (cita.getMedico() != null && cita.getFecha() != null) {
+            LocalDate fecha = cita.getFecha().toLocalDate();
+            LocalTime hora = cita.getFecha().toLocalTime();
+            
+            if (!estaLibreExcluyendoCita(cita.getMedico(), fecha, hora, cita.getId())) {
+                throw new CitaSolapadaException();
+            }
+        }
+        return super.save(cita);
+    }
 
     public List<Cita> getCitasDelDia(Long medicoId, LocalDate fecha) {
         LocalDateTime inicio = fecha.atStartOfDay();
@@ -40,11 +54,19 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
     }
 
     public boolean estaLibre(Medico medico, LocalDate fecha, LocalTime hora) {
+        return estaLibreExcluyendoCita(medico, fecha, hora, null);
+    }
+
+    public boolean estaLibreExcluyendoCita(Medico medico, LocalDate fecha, LocalTime hora, Long citaIdAExcluir) {
         int duracion = getDuracionCita(medico);
         LocalDateTime inicioCita = LocalDateTime.of(fecha, hora);
         LocalDateTime finCita = inicioCita.plusMinutes(duracion);
 
         for (Cita citaExistente : getCitasDelDia(medico.getId(), fecha)) {
+            if (citaIdAExcluir != null && citaExistente.getId().equals(citaIdAExcluir)) {
+                continue;
+            }
+            
             LocalDateTime inicioExistente = citaExistente.getFecha();
             LocalDateTime finExistente = inicioExistente.plusMinutes(getDuracionCita(medico));
 
@@ -63,3 +85,4 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
         return medico.getDuracionCitaMinutos();
     }
 }
+
