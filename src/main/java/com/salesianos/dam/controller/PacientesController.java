@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 
 import com.salesianos.dam.Paciente;
+import com.salesianos.dam.exception.PacienteSinNombreException;
 import com.salesianos.dam.service.PacienteService;
 
 @Controller
@@ -32,9 +33,14 @@ public class PacientesController {
     }
 
     @PostMapping("/pacientes/nuevo/submit")
-    public String procesarFormulario(@ModelAttribute("paciente") Paciente paciente) {
-        pacienteService.save(paciente);
-        return "redirect:/pacientes";
+    public String procesarFormulario(@ModelAttribute("paciente") Paciente paciente, Model model) {
+        try {
+            pacienteService.save(paciente);
+            return "redirect:/pacientes";
+        } catch (PacienteSinNombreException e) {
+            model.addAttribute("error", e.getMessage());
+            return "formulario-paciente";
+        }
     }
 
     @GetMapping("/pacientes/editar/{id}")
