@@ -46,7 +46,7 @@ public class MedicosController {
         return "redirect:/medicos";
     }
 
-    @GetMapping("/medicos/eliminar/{id}")
+    @PostMapping("/medicos/eliminar/{id}")
     public String eliminarMedico(@PathVariable("id") Long id) {
         medicoService.deleteById(id);
         return "redirect:/medicos";
