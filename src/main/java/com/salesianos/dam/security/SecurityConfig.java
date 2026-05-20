@@ -42,7 +42,7 @@ public class SecurityConfig {
         UserDetails user = User.builder()
             .username("user")
             .password(passwordEncoder.encode("user"))
-            .roles(UserRole.PACIENTE.name())
+            .roles(UserRole.MEDICO.name())
             .build();
             
         UserDetails admin = User.builder()
