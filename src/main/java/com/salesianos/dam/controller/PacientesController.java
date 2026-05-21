@@ -23,13 +23,13 @@ public class PacientesController {
     @GetMapping("/pacientes")
     public String pacientes(Model model) {
         model.addAttribute("pacientes", pacienteService.findAll());
-        return "pacientes";
+        return "pacientes/list";
     }
 
     @GetMapping("/pacientes/nuevo")
     public String mostrarFormulario(Model model) {
         model.addAttribute("paciente", new Paciente());
-        return "formulario-paciente";
+        return "pacientes/formulario";
     }
 
     @PostMapping("/pacientes/nuevo/submit")
@@ -39,7 +39,7 @@ public class PacientesController {
             return "redirect:/pacientes";
         } catch (PacienteSinNombreException e) {
             model.addAttribute("error", e.getMessage());
-            return "formulario-paciente";
+            return "pacientes/formulario";
         }
     }
 
@@ -48,7 +48,7 @@ public class PacientesController {
         Optional<Paciente> paciente = pacienteService.findById(id);
         if (paciente.isPresent()) {
             model.addAttribute("paciente", paciente.get());
-            return "formulario-paciente";
+            return "pacientes/formulario";
         }
         return "redirect:/pacientes";
     }

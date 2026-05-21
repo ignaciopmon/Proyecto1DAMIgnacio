@@ -39,7 +39,7 @@ public class CitasController {
     public String citas(Model model) {
         model.addAttribute("citas", citaService.findAll());
         model.addAttribute("estados", EstadosCita.values());
-        return "citas";
+        return "citas/list";
     }
 
 
@@ -47,7 +47,7 @@ public class CitasController {
     @GetMapping("/citas/nueva")
     public String showPaso1(Model model) {
         model.addAttribute("medicos", medicoService.findAll());
-        return "formulario-cita";
+        return "citas/formulario-paso1";
     }
 
 
@@ -141,6 +141,6 @@ public class CitasController {
             });
         }
 
-        return "formulario-cita-paso2";
+        return "citas/formulario-paso2";
     }
 }
