@@ -9,9 +9,9 @@
 
 <body class="container mt-4">
 
-    <div class="progress mb-4" style="height: 20px">
-        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0"
-            aria-valuemax="100">0%</div>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%"
+            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
 
     <h1>Nueva Cita</h1>
@@ -23,9 +23,8 @@
             <label for="medicoId" class="form-label">Médico</label>
             <select id="medicoId" name="medicoId" class="form-select" required>
                 <option value="">-- Seleccionar médico --</option>
-                <option th:each="medico : ${medicos}"
-                        th:value="${medico.id}"
-                        th:text="${medico.nombre + ' - ' + medico.especialidad + ' (' + (medico.duracionCitaMinutos ?: 30) + ' min)'}">
+                <option th:each="medico : ${medicos}" th:value="${medico.id}"
+                    th:text="${medico.nombre + ' - ' + medico.especialidad + ' (' + (medico.duracionCitaMinutos ?: 30) + ' min)'}">
                 </option>
             </select>
         </div>
