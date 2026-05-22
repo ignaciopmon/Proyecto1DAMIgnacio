@@ -29,6 +29,11 @@
             <input type="number" id="duracionCitaMinutos" th:field="*{duracionCitaMinutos}" class="form-control" min="5" step="5" required>
         </div>
 
+        <div class="mb-3">
+            <label for="username" class="form-label">Nombre de usuario (Username)</label>
+            <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Ej. medico">
+        </div>
+
         <button type="submit" class="btn btn-success">Guardar</button>
         <a href="/medicos" class="btn btn-secondary">Cancelar</a>
     </form>

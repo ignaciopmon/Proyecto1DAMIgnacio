@@ -24,6 +24,7 @@ public class Medico {
     private Long id;
     private String especialidad;
     private String nombre;
+    private String username;
     @Builder.Default
     private Integer duracionCitaMinutos = 30;
 

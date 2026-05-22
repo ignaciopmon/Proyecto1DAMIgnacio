@@ -1,5 +1,6 @@
 package com.salesianos.dam.controller;
 
+import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,41 @@ public class MedicosController {
     public String eliminarMedico(@PathVariable("id") Long id) {
         medicoService.deleteById(id);
         return "redirect:/medicos";
+    }
+
+    @GetMapping("/medico/citas")
+    public String verMisCitas(Principal principal, Model model) {
+        String username = principal.getName();
+        Medico medico = medicoService.findByUsername(username).orElse(null);
+        if (medico == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("medico", medico);
+        model.addAttribute("citas", medico.getCitas());
+        return "medicos/mis-citas";
+    }
+
+    @GetMapping("/medico/perfil")
+    public String verMiPerfil(Principal principal, Model model) {
+        String username = principal.getName();
+        Medico medico = medicoService.findByUsername(username).orElse(null);
+        if (medico == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("medico", medico);
+        return "medicos/mi-perfil";
+    }
+
+    @PostMapping("/medico/perfil/guardar")
+    public String guardarMiPerfil(@ModelAttribute("medico") Medico medicoForm, Principal principal) {
+        String username = principal.getName();
+        Medico medicoDb = medicoService.findByUsername(username).orElse(null);
+        if (medicoDb != null) {
+            medicoDb.setNombre(medicoForm.getNombre());
+            medicoDb.setEspecialidad(medicoForm.getEspecialidad());
+            medicoDb.setDuracionCitaMinutos(medicoForm.getDuracionCitaMinutos());
+            medicoService.save(medicoDb);
+        }
+        return "redirect:/medico/citas";
     }
 }

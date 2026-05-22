@@ -20,6 +20,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/css/**", "/js/**", "/img/**").permitAll()
+                .requestMatchers("/medico", "/medico/**").hasRole(UserRole.MEDICO.name())
                 .requestMatchers("/admin", "/admin/**", "/medicos", "/medicos/**", "/pacientes", "/pacientes/**", "/citas", "/citas/**").hasRole(UserRole.ADMIN.name())
                 .anyRequest().authenticated()
             )
@@ -39,8 +40,8 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
-            .username("user")
-            .password(passwordEncoder.encode("user"))
+            .username("medico")
+            .password(passwordEncoder.encode("medico"))
             .roles(UserRole.MEDICO.name())
             .build();
             
