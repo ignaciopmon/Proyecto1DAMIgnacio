@@ -21,16 +21,11 @@ public class MainController {
     @Autowired
     private CitaService citaService;
 
-    @GetMapping({ "/admin" })
-    public String inicio(Model model) {
+    @GetMapping({ "/", "/index", "/home", "/inicio" })
+    public String index(Model model) {
         model.addAttribute("numeroPacientes", pacienteService.findAll().size());
         model.addAttribute("numeroMedicos", medicoService.findAll().size());
         model.addAttribute("numeroCitas", citaService.findAll().size());
-        return "admin";
-    }
-
-    @GetMapping({ "/", "/index", "/home", "/inicio" })
-    public String index(Model model) {
         return "index";
     }
 

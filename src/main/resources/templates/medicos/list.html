@@ -12,7 +12,7 @@
 
     <div th:replace="fragments/indexreturn::indexreturn"></div>
 
-    <div class="mb-3">
+    <div class="mb-3" sec:authorize="hasRole('ADMIN')">
         <a href="/medicos/nuevo" class="btn btn-primary">Añadir Médico</a>
     </div>
 

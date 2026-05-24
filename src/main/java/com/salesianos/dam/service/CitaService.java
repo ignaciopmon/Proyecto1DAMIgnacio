@@ -116,5 +116,10 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
         double precioPorMinuto = medico.getPrecioPorMinuto() != null ? medico.getPrecioPorMinuto() : 1.50;
         return precioPorMinuto * duracion;
     }
+
+    public List<Cita> findByMedicoId(Long medicoId) {
+        if (medicoId == null) return List.of();
+        return repository.findByMedicoId(medicoId);
+    }
 }
 

@@ -7,4 +7,10 @@ import com.salesianos.dam.repository.MedicoRepository;
 
 @Service
 public class MedicoService extends BaseServiceImpl<Medico, Long, MedicoRepository> {
+
+    public Medico findByUsuario(String usuario) {
+        if (usuario == null) return null;
+        return repository.findByUsuario(usuario).orElse(null);
+    }
+
 }

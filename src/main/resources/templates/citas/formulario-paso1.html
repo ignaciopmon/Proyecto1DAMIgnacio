@@ -22,9 +22,10 @@
         <div class="mb-3">
             <label for="medicoId" class="form-label">Médico</label>
             <select id="medicoId" name="medicoId" class="form-select" required>
-                <option value="">-- Seleccionar médico --</option>
+                <option value="" th:if="${not esMedico}">-- Seleccionar médico --</option>
                 <option th:each="medico : ${medicos}" th:value="${medico.id}"
-                    th:text="${medico.nombre + ' - ' + medico.especialidad + ' (' + (medico.duracionCitaMinutos ?: 30) + ' min)'}">
+                    th:text="${medico.nombre + ' - ' + medico.especialidad + ' (' + (medico.duracionCitaMinutos ?: 30) + ' min)'}"
+                    th:selected="${esMedico}">
                 </option>
             </select>
         </div>

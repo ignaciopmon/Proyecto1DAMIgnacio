@@ -36,29 +36,51 @@ public class CitasController {
     private PacienteService pacienteService;
 
 
+    private Medico getMedicoLogueado(java.security.Principal principal) {
+        if (principal == null) return null;
+        return medicoService.findByUsuario(principal.getName());
+    }
+
     @GetMapping("/citas")
-    public String citas(Model model) {
-        model.addAttribute("citas", citaService.findAll());
+    public String citas(Model model, java.security.Principal principal) {
+        java.util.List<Cita> citasList;
+        Medico medicoLogueado = getMedicoLogueado(principal);
+        
+        if (medicoLogueado != null) {
+            citasList = citaService.findByMedicoId(medicoLogueado.getId());
+        } else {
+            citasList = citaService.findAll();
+        }
+        
+        model.addAttribute("citas", citasList);
         model.addAttribute("estados", EstadosCita.values());
         return "citas/list";
     }
 
-
-
     @GetMapping("/citas/nueva")
-    public String showPaso1(Model model) {
-        model.addAttribute("medicos", medicoService.findAll());
+    public String showPaso1(Model model, java.security.Principal principal) {
+        Medico medicoLogueado = getMedicoLogueado(principal);
+        if (medicoLogueado != null) {
+            model.addAttribute("medicos", java.util.List.of(medicoLogueado));
+            model.addAttribute("esMedico", true);
+        } else {
+            model.addAttribute("medicos", medicoService.findAll());
+            model.addAttribute("esMedico", false);
+        }
         return "citas/formulario-paso1";
     }
-
 
     @GetMapping("/citas/paso2")
     public String showPaso2(Model model,
                             @RequestParam Long medicoId,
-                            @RequestParam LocalDate fechaDia) {
+                            @RequestParam LocalDate fechaDia,
+                            java.security.Principal principal) {
+        Medico medicoLogueado = getMedicoLogueado(principal);
+        if (medicoLogueado != null && !medicoLogueado.getId().equals(medicoId)) {
+            return "redirect:/error";
+        }
         return cargarPaso2(model, new Cita(), medicoId, fechaDia, null, null);
     }
-
 
     @PostMapping("/citas/guardar")
     public String saveCita(@Valid @ModelAttribute("cita") Cita cita,
@@ -66,7 +88,13 @@ public class CitasController {
                            @RequestParam("medicoId") Long medicoId,
                            @RequestParam("fechaDia") LocalDate fechaDia,
                            @RequestParam("hora") LocalTime hora,
-                           @RequestParam(value = "pacienteId", required = false) Long pacienteId) {
+                           @RequestParam(value = "pacienteId", required = false) Long pacienteId,
+                           java.security.Principal principal) {
+
+        Medico medicoLogueado = getMedicoLogueado(principal);
+        if (medicoLogueado != null && !medicoLogueado.getId().equals(medicoId)) {
+            return "redirect:/error";
+        }
 
         Medico medico = medicoService.findById(medicoId).orElse(null);
 
@@ -116,10 +144,14 @@ public class CitasController {
 
     @PostMapping("/citas/{id}/estado")
     public String updateEstado(@PathVariable Long id,
-                               @RequestParam("estado") EstadosCita estado) {
+                               @RequestParam("estado") EstadosCita estado,
+                               java.security.Principal principal) {
         citaService.findById(id).ifPresent(cita -> {
-            cita.setEstado(estado);
-            citaService.save(cita);
+            Medico medicoLogueado = getMedicoLogueado(principal);
+            if (medicoLogueado == null || (cita.getMedico() != null && cita.getMedico().getId().equals(medicoLogueado.getId()))) {
+                cita.setEstado(estado);
+                citaService.save(cita);
+            }
         });
         return "redirect:/citas";
     }
