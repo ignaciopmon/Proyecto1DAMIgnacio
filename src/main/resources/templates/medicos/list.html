@@ -22,6 +22,8 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Especialidad</th>
+                <th>Duración (min)</th>
+                <th>Precio/min (€)</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -30,6 +32,8 @@
                 <td th:text="${medico.id}">1</td>
                 <td th:text="${medico.nombre}">Nombre</td>
                 <td th:text="${medico.especialidad}">Especialidad</td>
+                <td th:text="${medico.duracionCitaMinutos}">30</td>
+                <td th:text="${medico.precioPorMinuto + ' €'}">1.50 €</td>
                 <td>
                     <a th:href="@{'/medicos/editar/' + ${medico.id}}" class="btn btn-sm btn-warning">Editar</a>
                     <form th:action="@{'/medicos/eliminar/' + ${medico.id}}" method="post" class="d-inline"

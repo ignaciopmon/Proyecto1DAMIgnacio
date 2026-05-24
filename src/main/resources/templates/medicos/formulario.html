@@ -33,6 +33,11 @@
             <input type="number" id="duracionCitaMinutos" th:field="*{duracionCitaMinutos}" class="form-control" min="5" step="5" required>
         </div>
 
+        <div class="mb-3">
+            <label for="precioPorMinuto" class="form-label">Precio por minuto (€)</label>
+            <input type="number" step="0.01" id="precioPorMinuto" th:field="*{precioPorMinuto}" class="form-control" min="0" required>
+        </div>
+
         <button type="submit" class="btn btn-success">Guardar</button>
         <a href="/medicos" class="btn btn-secondary">Cancelar</a>
     </form>
