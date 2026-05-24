@@ -10,6 +10,10 @@
 <body class="container mt-4">
     <h1 th:text="${medico.id != null} ? 'Editar Médico' : 'Añadir Nuevo Médico'">Formulario Médico</h1>
 
+    <div th:if="${error != null}" class="alert alert-danger mt-3" role="alert" th:text="${error}">
+        Mensaje de error
+    </div>
+
     <form th:action="@{/medicos/nuevo/submit}" th:object="${medico}" method="post" class="mt-4">
 
         <input type="hidden" th:field="*{id}">
