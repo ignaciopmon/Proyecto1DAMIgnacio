@@ -110,5 +110,11 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
         }
         return medico.getDuracionCitaMinutos();
     }
+
+    public double calcularPrecio(Medico medico) {
+        int duracion = getDuracionCita(medico);
+        double precioPorMinuto = medico.getPrecioPorMinuto() != null ? medico.getPrecioPorMinuto() : 1.50;
+        return precioPorMinuto * duracion;
+    }
 }
 

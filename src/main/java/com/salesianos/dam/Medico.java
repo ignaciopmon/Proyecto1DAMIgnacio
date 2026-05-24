@@ -38,6 +38,11 @@ public class Medico {
     private Integer duracionCitaMinutos = 30;
 
     @Builder.Default
+    @NotNull(message = "El precio por minuto es obligatorio.")
+    @Min(value = 0, message = "El precio por minuto no puede ser negativo.")
+    private Double precioPorMinuto = 1.50;
+
+    @Builder.Default
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "medico")
     private List<Cita> citas = new ArrayList<>();
     

@@ -77,6 +77,7 @@ public class CitasController {
         cita.setMedico(medico);
         cita.setFecha(LocalDateTime.of(fechaDia, hora));
         cita.setDuracionMinutos(citaService.getDuracionCita(medico));
+        cita.setPrecio(citaService.calcularPrecio(medico));
 
         if (pacienteId != null) {
             cita.setPaciente(pacienteService.findById(pacienteId).orElse(null));
