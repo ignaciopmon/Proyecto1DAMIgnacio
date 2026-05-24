@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Telefono</th>
-                <th>Acciones</th>
+                <th sec:authorize="hasRole('ADMIN')">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
                 <td th:text="${paciente.nombre}">Nombre</td>
                 <td th:text="${paciente.email}">email</td>
                 <td th:text="${paciente.telefono}">telefono</td>
-                <td>
+                <td sec:authorize="hasRole('ADMIN')">
                     <a th:href="@{'/pacientes/editar/' + ${paciente.id}}" class="btn btn-sm btn-warning">Editar</a>
                     <a th:href="@{'/pacientes/eliminar/' + ${paciente.id}}" class="btn btn-sm btn-danger"
                        onclick="return confirm('¿Estás seguro de que quieres eliminar este paciente?')">Eliminar</a>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -11,52 +11,134 @@
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-    <nav class="navbar navbar-dark bg-primary shadow-sm">
+    <nav sec:authorize="isAnonymous()" class="navbar navbar-dark bg-primary shadow-sm">
         <div class="container justify-content-center justify-content-sm-start">
-            <a class="navbar-brand fw-bold" href="#">
+            <a class="navbar-brand fw-bold" th:href="@{/}">
                 <i class="bi bi-heart-pulse me-2"></i>ClinicSoft
             </a>
         </div>
     </nav>
 
+    <nav sec:authorize="isAuthenticated()" class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">
+                <i class="bi bi-heart-pulse me-2"></i>ClinicSoft
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/pacientes}"><i class="bi bi-people me-1"></i>Pacientes</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                        <a class="nav-link" th:href="@{/medicos}"><i class="bi bi-person-badge me-1"></i>Médicos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/citas}"><i class="bi bi-calendar-check me-1"></i>Citas</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <span class="navbar-text text-white me-2">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <strong sec:authentication="name">usuario</strong>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/logout}" class="btn btn-outline-light btn-sm">Cerrar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <main class="flex-grow-1 d-flex align-items-center py-5">
         <div class="container">
-            <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold text-dark">Bienvenido a ClinicSoft</h1>
-                <p class="lead text-muted">Sistema de gestión clínica</p>
+            
+            <div sec:authorize="isAnonymous()">
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bold text-dark">Bienvenido a ClinicSoft</h1>
+                    <p class="lead text-muted">Sistema de gestión de clínica médica</p>
+                </div>
+
+                <div class="row justify-content-center g-4">
+                    <div class="col-md-5 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm text-center p-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-4">
+                                    <i class="bi bi-person-badge-fill text-primary" style="font-size: 4rem;"></i>
+                                </div>
+                                <h4 class="card-title fw-bold">Área Médica</h4>
+                                <p class="text-muted mb-4 flex-grow-1">Acceso para médicos y personal sanitario para consultar pacientes y programar citas.</p>
+                                <a th:href="@{/login}" class="btn btn-primary w-100 py-2">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Entrar como Médico
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-5 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm text-center p-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-4">
+                                    <i class="bi bi-shield-lock-fill text-dark" style="font-size: 4rem;"></i>
+                                </div>
+                                <h4 class="card-title fw-bold">Administración</h4>
+                                <p class="text-muted mb-4 flex-grow-1">Acceso al panel de control general para la gestión total del sistema de la clínica.</p>
+                                <a th:href="@{/login}" class="btn btn-dark w-100 py-2">
+                                    <i class="bi bi-gear-fill me-2"></i>Entrar como Administrador
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="row justify-content-center g-4">
-                <div class="col-md-5 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm text-center p-4">
-                        <div class="card-body d-flex flex-column">
-                            <div class="mb-4">
-                                <i class="bi bi-person-fill text-primary" style="font-size: 4rem;"></i>
+            <div sec:authorize="isAuthenticated()">
+                <div class="text-center mb-5">
+                    <h1 class="display-6 fw-bold text-dark">Panel de Control</h1>
+                    <p class="lead text-muted">Bienvenido de nuevo, <strong class="text-primary" sec:authentication="name">usuario</strong></p>
+                </div>
+
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-4">
+                        <div class="card text-center h-100 border-0 shadow-sm p-3">
+                            <div class="card-body">
+                                <i class="bi bi-people-fill text-primary" style="font-size: 3.5rem;"></i>
+                                <h5 class="card-title mt-3 fw-bold">Pacientes</h5>
+                                <p class="display-6 fw-bold text-primary" th:text="${numeroPacientes}">0</p>
+                                <p class="text-muted">registrados</p>
+                                <a th:href="@{/pacientes}" class="btn btn-outline-primary btn-sm mt-2">Ver pacientes</a>
                             </div>
-                            <h4 class="card-title fw-bold">Pacientes</h4>
-                            <p class="text-muted mb-4 flex-grow-1">Acceso al portal del paciente para consultar citas e historial médico.</p>
-                            <a href="/login" class="btn btn-primary w-100 py-2">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Entrar como Paciente
-                            </a>
                         </div>
                     </div>
-                </div>
-                
-                <div class="col-md-5 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm text-center p-4">
-                        <div class="card-body d-flex flex-column">
-                            <div class="mb-4">
-                                <i class="bi bi-shield-lock-fill text-dark" style="font-size: 4rem;"></i>
+
+                    <div sec:authorize="hasRole('ADMIN')" class="col-md-4">
+                        <div class="card text-center h-100 border-0 shadow-sm p-3">
+                            <div class="card-body">
+                                <i class="bi bi-person-badge-fill text-success" style="font-size: 3.5rem;"></i>
+                                <h5 class="card-title mt-3 fw-bold">Médicos</h5>
+                                <p class="display-6 fw-bold text-success" th:text="${numeroMedicos}">0</p>
+                                <p class="text-muted">registrados</p>
+                                <a th:href="@{/medicos}" class="btn btn-outline-success btn-sm mt-2">Ver médicos</a>
                             </div>
-                            <h4 class="card-title fw-bold">Administración</h4>
-                            <p class="text-muted mb-4 flex-grow-1">Acceso al panel de control para personal médico y administrativo.</p>
-                            <a href="/admin" class="btn btn-dark w-100 py-2">
-                                <i class="bi bi-gear-fill me-2"></i>Entrar como Administrador
-                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card text-center h-100 border-0 shadow-sm p-3">
+                            <div class="card-body">
+                                <i class="bi bi-calendar-check-fill text-info" style="font-size: 3.5rem;"></i>
+                                <h5 class="card-title mt-3 fw-bold">Citas</h5>
+                                <p class="display-6 fw-bold text-info" th:text="${numeroCitas}">0</p>
+                                <p class="text-muted">creadas</p>
+                                <a th:href="@{/citas}" class="btn btn-outline-info btn-sm mt-2">Ver citas</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 

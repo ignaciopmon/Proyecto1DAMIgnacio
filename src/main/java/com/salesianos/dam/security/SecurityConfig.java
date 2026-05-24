@@ -20,7 +20,17 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/css/**", "/js/**", "/img/**").permitAll()
-                .requestMatchers("/admin", "/admin/**", "/medicos", "/medicos/**", "/pacientes", "/pacientes/**", "/citas", "/citas/**").hasRole(UserRole.ADMIN.name())
+                // Solo ADMIN: editar y eliminar
+                .requestMatchers(
+                    "/medicos/editar/**", "/medicos/eliminar/**",
+                    "/pacientes/editar/**", "/pacientes/eliminar/**",
+                    "/citas/editar/**", "/citas/eliminar/**"
+                ).hasRole(UserRole.ADMIN.name())
+                // Solo ADMIN: gestión completa de médicos
+                .requestMatchers("/medicos", "/medicos/**").hasRole(UserRole.ADMIN.name())
+                // ADMIN y MEDICO: ver listados y crear
+                .requestMatchers("/pacientes", "/pacientes/nuevo", "/pacientes/nuevo/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
+                .requestMatchers("/citas", "/citas/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -38,9 +48,9 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder()
-            .username("user")
-            .password(passwordEncoder.encode("user"))
+        UserDetails medico = User.builder()
+            .username("medico")
+            .password(passwordEncoder.encode("medico"))
             .roles(UserRole.MEDICO.name())
             .build();
             
@@ -50,6 +60,6 @@ public class SecurityConfig {
             .roles(UserRole.ADMIN.name())
             .build();
 
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(medico, admin);
     }
 }

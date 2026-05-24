@@ -7,4 +7,7 @@ import com.salesianos.dam.Medico;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
+
+    java.util.Optional<Medico> findByUsuario(String usuario);
+
 }

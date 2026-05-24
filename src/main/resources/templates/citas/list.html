@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -29,7 +29,7 @@
                 <th>Paciente</th>
                 <th>Medico</th>
                 <th>Observaciones</th>
-                <th>Acciones</th>
+                <th sec:authorize="hasRole('ADMIN')">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
                 <td th:text="${cita.paciente != null} ? ${cita.paciente.nombre} : 'Sin paciente'">P001</td>
                 <td th:text="${cita.medico != null} ? ${cita.medico.nombre} : 'Sin médico'">M001</td>
                 <td th:text="${cita.observaciones}">Observaciones</td>
-                <td>
+                <td sec:authorize="hasRole('ADMIN')">
                     <a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-sm btn-warning">Editar</a>
                     <a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-sm btn-danger"
                        onclick="return confirm('¿Estás seguro de que quieres eliminar esta cita?')">Eliminar</a>

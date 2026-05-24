@@ -12,4 +12,6 @@ import com.salesianos.dam.Cita;
 public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findByMedicoIdAndFechaBetween(Long medicoId, LocalDateTime inicioDia, LocalDateTime finDia);
+
+    List<Cita> findByMedicoId(Long medicoId);
 }
