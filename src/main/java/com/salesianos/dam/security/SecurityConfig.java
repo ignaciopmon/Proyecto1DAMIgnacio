@@ -22,7 +22,11 @@ public class SecurityConfig {
                 .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/css/**", "/js/**", "/img/**").permitAll()
                 // Solo ADMIN: panel admin, editar y eliminar
                 .requestMatchers("/admin", "/admin/**").hasRole(UserRole.ADMIN.name())
-                .requestMatchers("/**/editar/**", "/**/eliminar/**").hasRole(UserRole.ADMIN.name())
+                .requestMatchers(
+                    "/medicos/editar/**", "/medicos/eliminar/**",
+                    "/pacientes/editar/**", "/pacientes/eliminar/**",
+                    "/citas/editar/**", "/citas/eliminar/**"
+                ).hasRole(UserRole.ADMIN.name())
                 // ADMIN y MEDICO: ver listados y crear
                 .requestMatchers("/medicos", "/medicos/nuevo", "/medicos/nuevo/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .requestMatchers("/pacientes", "/pacientes/nuevo", "/pacientes/nuevo/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
