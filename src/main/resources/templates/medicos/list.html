@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,7 @@
                 <th>Especialidad</th>
                 <th>Duración (min)</th>
                 <th>Precio/min (€)</th>
-                <th>Acciones</th>
+                <th sec:authorize="hasRole('ADMIN')">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
                 <td th:text="${medico.especialidad}">Especialidad</td>
                 <td th:text="${medico.duracionCitaMinutos}">30</td>
                 <td th:text="${medico.precioPorMinuto + ' €'}">1.50 €</td>
-                <td>
+                <td sec:authorize="hasRole('ADMIN')">
                     <a th:href="@{'/medicos/editar/' + ${medico.id}}" class="btn btn-sm btn-warning">Editar</a>
                     <form th:action="@{'/medicos/eliminar/' + ${medico.id}}" method="post" class="d-inline"
                         onsubmit="return confirm('¿Estás seguro de que quieres eliminar este médico?')">
