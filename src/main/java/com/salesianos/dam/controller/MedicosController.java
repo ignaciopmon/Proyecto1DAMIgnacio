@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.salesianos.dam.Medico;
-import com.salesianos.dam.exception.EspecialidadInvalidaException;
-import com.salesianos.dam.exception.MedicoSinNombreException;
 import com.salesianos.dam.service.MedicoService;
+import jakarta.validation.Valid;
 
 @Controller
 public class MedicosController {
@@ -32,14 +31,9 @@ public class MedicosController {
     }
 
     @PostMapping("/medicos/nuevo/submit")
-    public String procesarFormulario(@ModelAttribute("medico") Medico medico, Model model) {
-        try {
-            medicoService.save(medico);
-            return "redirect:/medicos";
-        } catch (MedicoSinNombreException | EspecialidadInvalidaException | IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            return "medicos/formulario";
-        }
+    public String procesarFormulario(@Valid @ModelAttribute("medico") Medico medico) {
+        medicoService.save(medico);
+        return "redirect:/medicos";
     }
 
     @GetMapping("/medicos/editar/{id}")

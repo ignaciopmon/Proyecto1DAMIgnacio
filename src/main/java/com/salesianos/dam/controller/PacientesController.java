@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 
 import com.salesianos.dam.Paciente;
-import com.salesianos.dam.exception.EmailInvalidoException;
-import com.salesianos.dam.exception.PacienteSinNombreException;
-import com.salesianos.dam.exception.TelefonoInvalidoException;
 import com.salesianos.dam.service.PacienteService;
+import jakarta.validation.Valid;
 
 @Controller
 public class PacientesController {
@@ -35,14 +33,9 @@ public class PacientesController {
     }
 
     @PostMapping("/pacientes/nuevo/submit")
-    public String procesarFormulario(@ModelAttribute("paciente") Paciente paciente, Model model) {
-        try {
-            pacienteService.save(paciente);
-            return "redirect:/pacientes";
-        } catch (PacienteSinNombreException | EmailInvalidoException | TelefonoInvalidoException e) {
-            model.addAttribute("error", e.getMessage());
-            return "pacientes/formulario";
-        }
+    public String procesarFormulario(@Valid @ModelAttribute("paciente") Paciente paciente) {
+        pacienteService.save(paciente);
+        return "redirect:/pacientes";
     }
 
     @GetMapping("/pacientes/editar/{id}")
