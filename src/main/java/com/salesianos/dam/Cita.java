@@ -24,6 +24,7 @@ public class Cita {
 
     @Id @GeneratedValue
     private Long id;
+    private String codigo;
     private LocalDateTime fecha;
     private int duracionMinutos;
     private double precio;
@@ -35,5 +36,12 @@ public class Cita {
     private Paciente paciente;
     @ManyToOne
     private Medico medico;
+
+    @jakarta.persistence.PrePersist
+    public void generarCodigo() {
+        if (this.codigo == null) {
+            this.codigo = "CITA-" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        }
+    }
 
 }
