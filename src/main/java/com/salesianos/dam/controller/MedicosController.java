@@ -21,13 +21,13 @@ public class MedicosController {
     @GetMapping("/medicos")
     public String medicos(Model model) {
         model.addAttribute("medicos", medicoService.findAll());
-        return "medicos";
+        return "medicos/list";
     }
 
     @GetMapping("/medicos/nuevo")
     public String mostrarFormulario(Model model) {
         model.addAttribute("medico", new Medico());
-        return "formulario-medico";
+        return "medicos/formulario";
     }
 
     @PostMapping("/medicos/nuevo/submit")
@@ -41,7 +41,7 @@ public class MedicosController {
         Optional<Medico> medico = medicoService.findById(id);
         if (medico.isPresent()) {
             model.addAttribute("medico", medico.get());
-            return "formulario-medico";
+            return "medicos/formulario";
         }
         return "redirect:/medicos";
     }
