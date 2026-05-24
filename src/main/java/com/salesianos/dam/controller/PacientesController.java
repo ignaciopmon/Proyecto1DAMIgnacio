@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 
 import com.salesianos.dam.Paciente;
+import com.salesianos.dam.exception.EmailInvalidoException;
 import com.salesianos.dam.exception.PacienteSinNombreException;
+import com.salesianos.dam.exception.TelefonoInvalidoException;
 import com.salesianos.dam.service.PacienteService;
 
 @Controller
@@ -37,7 +39,7 @@ public class PacientesController {
         try {
             pacienteService.save(paciente);
             return "redirect:/pacientes";
-        } catch (PacienteSinNombreException e) {
+        } catch (PacienteSinNombreException | EmailInvalidoException | TelefonoInvalidoException e) {
             model.addAttribute("error", e.getMessage());
             return "pacientes/formulario";
         }
