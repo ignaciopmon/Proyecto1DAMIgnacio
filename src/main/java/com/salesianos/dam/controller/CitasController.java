@@ -21,6 +21,7 @@ import com.salesianos.dam.exception.CitaSolapadaException;
 import com.salesianos.dam.service.CitaService;
 import com.salesianos.dam.service.MedicoService;
 import com.salesianos.dam.service.PacienteService;
+import jakarta.validation.Valid;
 
 @Controller
 public class CitasController {
@@ -60,7 +61,7 @@ public class CitasController {
 
 
     @PostMapping("/citas/guardar")
-    public String saveCita(@ModelAttribute("cita") Cita cita,
+    public String saveCita(@Valid @ModelAttribute("cita") Cita cita,
                            Model model,
                            @RequestParam("medicoId") Long medicoId,
                            @RequestParam("fechaDia") LocalDate fechaDia,
