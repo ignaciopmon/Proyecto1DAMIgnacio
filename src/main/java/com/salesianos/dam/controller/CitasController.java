@@ -83,7 +83,7 @@ public class CitasController {
     }
 
     @PostMapping("/citas/guardar")
-    public String saveCita(@Valid @ModelAttribute("cita") Cita cita,
+    public String saveCita(@ModelAttribute("cita") Cita cita,
                            Model model,
                            @RequestParam("medicoId") Long medicoId,
                            @RequestParam("fechaDia") LocalDate fechaDia,
