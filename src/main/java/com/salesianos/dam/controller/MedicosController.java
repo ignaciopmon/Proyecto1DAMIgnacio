@@ -51,4 +51,33 @@ public class MedicosController {
         medicoService.deleteById(id);
         return "redirect:/medicos";
     }
+
+    @GetMapping("/medicos/perfil")
+    public String mostrarPerfil(Model model, java.security.Principal principal) {
+        Medico medico = null;
+        if (principal != null) {
+            medico = medicoService.findByUsuario(principal.getName());
+        }
+        if (medico == null) {
+            Optional<Medico> firstMedico = medicoService.findAll().stream().findFirst();
+            if (firstMedico.isPresent()) {
+                medico = firstMedico.get();
+            }
+        }
+        if (medico != null) {
+            model.addAttribute("medico", medico);
+            return "medicos/perfil";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/medicos/perfil/submit")
+    public String guardarPerfil(@Valid @ModelAttribute("medico") Medico medico, org.springframework.validation.BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "medicos/perfil";
+        }
+        medicoService.save(medico);
+        return "redirect:/medicos/perfil?saved=true";
+    }
+
 }
