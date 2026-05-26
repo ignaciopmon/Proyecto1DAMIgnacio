@@ -1,0 +1,33 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="navbar">
+    <nav sec:authorize="isAnonymous()" class="navbar navbar-expand navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi bi-heart-pulse"></i> ClinicSoft
+            </a>
+        </div>
+    </nav>
+    <nav sec:authorize="isAuthenticated()" class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi bi-heart-pulse"></i> ClinicSoft
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-link" th:href="@{/pacientes}">Pacientes</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/medicos}">Médicos</a>
+                    <a class="nav-link" th:href="@{/citas}">Citas</a>
+                    <a sec:authorize="hasRole('MEDICO')" class="nav-link" th:href="@{/medicos/perfil}">Mi Perfil</a>
+                </div>
+                <div class="navbar-nav">
+                    <span class="nav-item nav-link text-white">
+                        Hola, <span sec:authentication="name">usuario</span>
+                    </span>
+                    <a th:href="@{/logout}" class="btn btn-outline-light btn-sm">Salir</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</th:block>

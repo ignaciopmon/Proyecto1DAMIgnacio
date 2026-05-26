@@ -20,15 +20,13 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/css/**", "/js/**", "/img/**").permitAll()
-                // Solo ADMIN: editar y eliminar
+                .requestMatchers("/medicos/perfil", "/medicos/perfil/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .requestMatchers(
                     "/medicos/editar/**", "/medicos/eliminar/**",
                     "/pacientes/editar/**", "/pacientes/eliminar/**",
                     "/citas/editar/**", "/citas/eliminar/**"
                 ).hasRole(UserRole.ADMIN.name())
-                // Solo ADMIN: gestión completa de médicos
                 .requestMatchers("/medicos", "/medicos/**").hasRole(UserRole.ADMIN.name())
-                // ADMIN y MEDICO: ver listados y crear
                 .requestMatchers("/pacientes", "/pacientes/nuevo", "/pacientes/nuevo/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .requestMatchers("/citas", "/citas/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .anyRequest().authenticated()

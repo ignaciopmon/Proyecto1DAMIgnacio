@@ -53,7 +53,7 @@ public class Cita {
 
     @jakarta.persistence.PrePersist
     public void generarCodigo() {
-        if (this.codigo == null) {
+        if (this.codigo == null || this.codigo.trim().isEmpty()) {
             this.codigo = "CITA-" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         }
     }
