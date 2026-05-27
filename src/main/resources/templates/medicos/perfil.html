@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
 
     <nav th:replace="~{fragments/navbar::navbar}"></nav>
 
@@ -123,11 +123,7 @@
         </div>
     </main>
 
-    <footer class="text-center py-4 bg-white border-top mt-auto">
-        <div class="container">
-            <span class="text-secondary">&copy; 2026 ClinicSoft</span>
-        </div>
-    </footer>
+    <div th:replace="~{fragments/footer::footer}"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
