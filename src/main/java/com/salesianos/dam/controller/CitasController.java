@@ -23,7 +23,6 @@ import com.salesianos.dam.service.MedicoService;
 import com.salesianos.dam.service.PacienteService;
 import jakarta.validation.Valid;
 
-// este es uno de los camareros principales, controla todas las peticiones de la web relacionadas con la gestión de citas
 @Controller
 public class CitasController {
 
@@ -37,15 +36,14 @@ public class CitasController {
     private PacienteService pacienteService;
 
 
-    // método de utilidad interno para saber qué médico ha iniciado sesión en la web
-    // si no hay nadie logueado (ej. es un admin genérico o un invitado), devuelve null
+    // método saber qué médico ha iniciado sesión en la web y si no hay nadie logueado devuelve null
     private Medico getMedicoLogueado(java.security.Principal principal) {
         if (principal == null) return null;
         return medicoService.findByUsuario(principal.getName());
     }
 
-    // muestra la pantalla con el listado general de citas de la clínica
-    // si ha entrado un Médico, solo le mostramos sus propias citas. si entra un Administrador, le mostramos todas las citas
+    // Muestra la pantalla con el listado general de citas de la clínica
+    // si ha entrado un médico solo le mostramos sus propias citas pero si entra un admin le mostramos todas las citas
     @GetMapping("/citas")
     public String citas(Model model, java.security.Principal principal) {
         java.util.List<Cita> citasList;
@@ -62,8 +60,7 @@ public class CitasController {
         return "citas/list";
     }
 
-    // Paso 1 de la creación de citas: muestra un formulario sencillo donde eliges Médico y Día
-    // si eres un Médico en activo, el sistema te bloquea la pantalla para que solo puedas agendar citas contigo mismo
+    // Muestra un formulario donde eliges médico y día y si eres un médico en activo solo puedes agendar citas contigo mismo
     @GetMapping("/citas/nueva")
     public String showPaso1(Model model, java.security.Principal principal) {
         Medico medicoLogueado = getMedicoLogueado(principal);
@@ -77,23 +74,22 @@ public class CitasController {
         return "citas/formulario-paso1";
     }
 
-    // Paso 2 de la creación de citas: carga los detalles específicos una vez elegidos el médico y el día
-    // aquí es donde se calculan de manera dinámica las horas en las que ese médico está libre hoy
+    //Carga los detalles específicos una vez elegidos el médico y el día. Aquí se calculan las horas en las que ese médico está libre hoy
     @GetMapping("/citas/paso2")
     public String showPaso2(Model model,
                             @RequestParam Long medicoId,
                             @RequestParam LocalDate fechaDia,
                             java.security.Principal principal) {
         Medico medicoLogueado = getMedicoLogueado(principal);
-        // si el usuario es un médico e intenta forzar la URL de otro médico, le redirigimos a error
+        // si el usuario es un médico e intenta meter URL de otro médico le mandamos a error
         if (medicoLogueado != null && !medicoLogueado.getId().equals(medicoId)) {
             return "redirect:/error";
         }
         return cargarPaso2(model, new Cita(), medicoId, fechaDia, null, null);
     }
 
-    // procesa el envío del formulario del Paso 2 para guardar la cita en el sistema
-    // rellena de forma automática el precio y la duración estimada basándose en los datos del médico
+    // procesa el envío del formulario del paso 2 para guardar la cita en el sistema y 
+    // pone el precio y la duración estimada basándose en los datos del médico
     @PostMapping("/citas/guardar")
     public String saveCita(@ModelAttribute("cita") Cita cita,
                            Model model,
@@ -114,7 +110,7 @@ public class CitasController {
             return cargarPaso2(model, cita, medicoId, fechaDia, hora, "Selecciona un médico válido.");
         }
 
-        // rellenamos automáticamente los metadatos de la cita calculados en el Servicio
+        // rellenamos automáticamente los datos de la cita calculados en el servicio
         cita.setMedico(medico);
         cita.setFecha(LocalDateTime.of(fechaDia, hora));
         cita.setDuracionMinutos(citaService.getDuracionCita(medico));
@@ -124,8 +120,8 @@ public class CitasController {
             cita.setPaciente(pacienteService.findById(pacienteId).orElse(null));
         }
 
-        // intentamos guardar la cita. si salta un error de solapamiento o cita duplicada, no rompemos el servidor,
-        // sino que recargamos la pantalla mostrando el error arriba para que el usuario elija otra hora
+        // intentamos guardar la cita y si salta un error de solapamiento o cita duplicada
+        //  recargamos la pantalla mostrando el error para que el usuario elija otra hora
         try {
             citaService.save(cita);
         } catch (CitaSolapadaException | CitaDuplicadaException e) {
@@ -135,7 +131,7 @@ public class CitasController {
     }
 
 
-    // muestra la pantalla para editar una cita existente reutilizando la lógica dinámica del Paso 2
+    // muestra la pantalla para editar una cita existente volviendo a cargar el paso 2
     @GetMapping("/citas/editar/{id}")
     public String showEditCitaForm(@PathVariable Long id, Model model) {
         Cita cita = citaService.findById(id).orElse(null);
@@ -151,7 +147,6 @@ public class CitasController {
     }
 
 
-    // elimina una cita de la base de datos a partir de su ID
     @GetMapping("/citas/eliminar/{id}")
     public String deleteCita(@PathVariable Long id) {
         citaService.deleteById(id);
@@ -159,8 +154,7 @@ public class CitasController {
     }
 
 
-    // permite actualizar rápidamente el estado de una cita desde la propia lista
-    // un médico solo puede alterar el estado de sus propias citas
+    // permite actualizar el estado de una cita desde la propia lista pero uun médico solo puede alterar el estado de sus propias citas
     @PostMapping("/citas/{id}/estado")
     public String updateEstado(@PathVariable Long id,
                                @RequestParam("estado") EstadosCita estado,
@@ -176,7 +170,7 @@ public class CitasController {
     }
 
 
-    // método de apoyo interno para rellenar de manera limpia todos los datos necesarios en la pantalla del Paso 2
+    // método para rellenar todos los datos necesarios en la pantalla del paso 2
     // carga los pacientes disponibles, los posibles estados de la cita y la lista de horas libres calculada
     private String cargarPaso2(Model model, Cita cita, Long medicoId, LocalDate fechaDia,
                                 LocalTime horaSeleccionada, String error) {
