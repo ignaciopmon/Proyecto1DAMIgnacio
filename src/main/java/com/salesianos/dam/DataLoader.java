@@ -11,6 +11,7 @@ import com.salesianos.dam.service.CitaService;
 import com.salesianos.dam.service.MedicoService;
 import com.salesianos.dam.service.PacienteService;
 
+
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -23,8 +24,10 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private CitaService citaService;
 
+    // este método se ejecuta automáticamente justo después de que la aplicación termine de arrancar
     @Override
     public void run(String... args) throws Exception {
+        // solo metemos datos si la base de datos está completamente vacía para no duplicarlos cada vez que reiniciamos
         if (pacienteService.findAll().isEmpty() && medicoService.findAll().isEmpty()) {
             
             Paciente p1 = Paciente.builder()
