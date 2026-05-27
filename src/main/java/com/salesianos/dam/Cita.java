@@ -51,11 +51,14 @@ public class Cita {
     @NotNull(message = "Debe asignar un médico a la cita.")
     private Medico medico;
 
+    // justo antes de guardar la cita en la base de datos generamos un código 
     @jakarta.persistence.PrePersist
     public void generarCodigo() {
         if (this.codigo == null || this.codigo.trim().isEmpty()) {
             this.codigo = "CITA-" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         }
     }
+
+
 
 }

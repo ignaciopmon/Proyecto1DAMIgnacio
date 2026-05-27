@@ -20,23 +20,30 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/css/**", "/js/**", "/img/**").permitAll()
+                // tanto el médico como el admin pueden ver y editar el perfil de médico
                 .requestMatchers("/medicos/perfil", "/medicos/perfil/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .requestMatchers(
                     "/medicos/editar/**", "/medicos/eliminar/**",
                     "/pacientes/editar/**", "/pacientes/eliminar/**",
                     "/citas/editar/**", "/citas/eliminar/**"
                 ).hasRole(UserRole.ADMIN.name())
+                // ver el listado de médicos y sus detalles solo lo puede hacer el admin
                 .requestMatchers("/medicos", "/medicos/**").hasRole(UserRole.ADMIN.name())
                 .requestMatchers("/pacientes", "/pacientes/nuevo", "/pacientes/nuevo/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
+                // gestionar las citas lo pueden hacer tanto el admin como el médico
                 .requestMatchers("/citas", "/citas/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
+                // cualquier otra página que no esté arriba pide iniciar sesión
                 .anyRequest().authenticated()
             )
+    
             .formLogin(form -> form
+                // página personalizada
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .permitAll()
             )
             .logout(logout -> logout
+                // tras cerrar sesión volvemos a la portada
                 .logoutSuccessUrl("/")
                 .permitAll()
             );
@@ -46,12 +53,14 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        // creamos el usuario "medico" con contraseña "medico" y su rol 
         UserDetails medico = User.builder()
             .username("medico")
             .password(passwordEncoder.encode("medico"))
             .roles(UserRole.MEDICO.name())
             .build();
             
+        // creamos el usuario "admin" con contraseña "admin"
         UserDetails admin = User.builder()
             .username("admin")
             .password(passwordEncoder.encode("admin"))
