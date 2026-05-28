@@ -228,27 +228,21 @@ public class DataLoader implements CommandLineRunner {
                     Medico medico = medicos.get(mIdx);
                     String[] observaciones = observacionesPorMedico[mIdx];
 
-                    // Obtener huecos disponibles estándar (redondos) para este médico en este día
                     List<LocalTime> horasDisponibles = citaService.getHorasDisponibles(medico, dia);
                     if (horasDisponibles.isEmpty()) {
                         continue;
                     }
 
-                    // Menos densidad de citas en general:
-                    // Pasado: 25% de probabilidad de tener 1 cita, sino 0.
-                    // Futuro/Presente: entre 0 y 2 citas al día.
                     int numCitasMax = esPasado ? (random.nextDouble() < 0.25 ? 1 : 0) : random.nextInt(3);
                     int numCitas = Math.min(numCitasMax, horasDisponibles.size());
                     if (numCitas == 0) {
                         continue;
                     }
 
-                    // Mezclar los huecos disponibles
                     Collections.shuffle(horasDisponibles, random);
                     List<LocalTime> horasSeleccionadas = horasDisponibles.subList(0, numCitas);
 
                     for (LocalTime hora : horasSeleccionadas) {
-                        // Buscar un paciente aleatorio que no tenga cita con este médico en este día
                         Paciente pacienteElegido = null;
                         List<Paciente> pacientesCandidatos = new ArrayList<>(pacientes);
                         Collections.shuffle(pacientesCandidatos, random);
@@ -264,15 +258,12 @@ public class DataLoader implements CommandLineRunner {
                             continue;
                         }
 
-                        // Seleccionar observación aleatoria
                         String obs = observaciones[random.nextInt(observaciones.length)];
 
-                        // Estado de la cita
                         EstadosCita estado = esPasado 
                             ? ((random.nextDouble() < 0.15) ? EstadosCita.NO_PRESENTADO : EstadosCita.REALIZADA) 
                             : EstadosCita.PENDIENTE;
 
-                        // Crear y guardar la cita
                         crearCita(pacienteElegido, medico, dia.atTime(hora), estado, obs);
                     }
                 }
