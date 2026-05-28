@@ -16,6 +16,6 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findByMedicoId(Long medicoId);
 
-    @Query("SELECT CAST(c.fecha AS date) as dia, COUNT(c) FROM Cita c GROUP BY CAST(c.fecha AS date) ORDER BY dia DESC")
+    @Query("SELECT CAST(c.fecha AS date) as dia, COUNT(c) FROM Cita c WHERE CAST(c.fecha AS date) >= CURRENT_DATE AND c.estado = com.salesianos.dam.enums.EstadosCita.PENDIENTE GROUP BY CAST(c.fecha AS date) ORDER BY COUNT(c) DESC LIMIT 7")
     List<Object[]> countCitasPorDia();
 }

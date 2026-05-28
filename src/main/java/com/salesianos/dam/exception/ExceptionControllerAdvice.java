@@ -18,7 +18,7 @@ public class ExceptionControllerAdvice {
         return "error";
     }
 
-    // atrapa los errores de validación de base de datos o restricciones de campos (como si el número de teléfono no cumple tener 9 dígitos)
+    // atrapa los errores de validación de base de datos o restricciones de campos (como si el número de teléfono no tiene 9 dígitos)
     @ExceptionHandler(jakarta.validation.ConstraintViolationException.class)
     public String handleConstraintViolation(jakarta.validation.ConstraintViolationException ex, Model model) {
         String msg = ex.getConstraintViolations().iterator().next().getMessage();
