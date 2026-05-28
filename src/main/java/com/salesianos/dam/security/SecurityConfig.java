@@ -21,7 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/favicon.svg", "/css/**", "/js/**", "/img/**").permitAll()
+                .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/favicon.svg", "/css/**", "/js/**", "/img/**", "/h2-console/**").permitAll()
                 // tanto el médico como el admin pueden ver y editar el perfil de médico
                 .requestMatchers("/medicos/perfil", "/medicos/perfil/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .requestMatchers(
@@ -50,7 +50,11 @@ public class SecurityConfig {
                 .logoutRequestMatcher(PathPatternRequestMatcher.pathPattern(HttpMethod.GET, "/logout"))
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
-            );
+            )
+            
+            // Permitir la consola H2
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
 
         return http.build();
     }
