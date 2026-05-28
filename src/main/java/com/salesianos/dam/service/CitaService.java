@@ -97,7 +97,7 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
             }
             
             LocalDateTime inicioExistente = citaExistente.getFecha();
-            LocalDateTime finExistente = inicioExistente.plusMinutes(getDuracionCita(medico));
+            LocalDateTime finExistente = inicioExistente.plusMinutes(citaExistente.getDuracionMinutos());
 
             // Si el inicio de nuestra cita es antes del fin de la otra y el fin de nustra cita es después del inicio de la otra pues chocan
             if (inicioCita.isBefore(finExistente) && finCita.isAfter(inicioExistente)) {
