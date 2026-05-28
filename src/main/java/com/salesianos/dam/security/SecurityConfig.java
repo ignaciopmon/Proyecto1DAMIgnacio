@@ -19,20 +19,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/css/**", "/js/**", "/img/**").permitAll()
+                .requestMatchers("/", "/index", "/home", "/inicio", "/login", "/error", "/favicon.svg", "/css/**", "/js/**", "/img/**").permitAll()
                 // tanto el médico como el admin pueden ver y editar el perfil de médico
                 .requestMatchers("/medicos/perfil", "/medicos/perfil/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 .requestMatchers(
                     "/medicos/editar/**", "/medicos/eliminar/**",
                     "/pacientes/editar/**", "/pacientes/eliminar/**",
-                    "/citas/editar/**", "/citas/eliminar/**"
+                    "/citas/editar/**", "/citas/eliminar/**",
+                    "/estadisticas"
                 ).hasRole(UserRole.ADMIN.name())
                 // ver el listado de médicos y sus detalles solo lo puede hacer el admin
                 .requestMatchers("/medicos", "/medicos/**").hasRole(UserRole.ADMIN.name())
                 .requestMatchers("/pacientes", "/pacientes/nuevo", "/pacientes/nuevo/submit").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
                 // gestionar las citas lo pueden hacer tanto el admin como el médico
                 .requestMatchers("/citas", "/citas/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.MEDICO.name())
-                // cualquier otra página que no esté arriba pide iniciar sesión
                 .anyRequest().authenticated()
             )
     

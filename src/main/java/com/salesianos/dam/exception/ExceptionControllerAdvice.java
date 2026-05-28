@@ -14,7 +14,7 @@ public class ExceptionControllerAdvice {
         //obtenemos el primer mensaje de error que hayamos configurado en la entidad
         String msg = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         model.addAttribute("message", msg);
-        // le mostramos al usuario la pantalla de error.html con el mensaje amigable
+        // le mostramos al usuario la pantalla de error.html con el mensaje
         return "error";
     }
 
