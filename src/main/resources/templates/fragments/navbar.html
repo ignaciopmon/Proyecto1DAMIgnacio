@@ -19,6 +19,7 @@
                     <a class="nav-link" th:href="@{/pacientes}">Pacientes</a>
                     <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/medicos}">Médicos</a>
                     <a class="nav-link" th:href="@{/citas}">Citas</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/estadisticas}">Estadísticas</a>
                     <a sec:authorize="hasRole('MEDICO')" class="nav-link" th:href="@{/medicos/perfil}">Mi Perfil</a>
                 </div>
                 <div class="navbar-nav">

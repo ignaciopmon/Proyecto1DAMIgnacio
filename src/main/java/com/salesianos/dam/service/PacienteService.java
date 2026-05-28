@@ -24,6 +24,10 @@ public class PacienteService extends BaseServiceImpl<Paciente, Long, PacienteRep
         // Si el paciente está libre de citas pendientes lo borramos
         super.deleteById(id);
     }
+
+    public java.util.List<Object[]> findPacientesMasFrecuentes() {
+        return repository.findPacientesMasFrecuentes();
+    }
 }
 
 

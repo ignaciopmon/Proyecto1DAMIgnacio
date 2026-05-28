@@ -23,7 +23,7 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
     private static final LocalTime INICIO_CONSULTA = LocalTime.of(9, 0);
     private static final LocalTime FIN_CONSULTA = LocalTime.of(18, 0);
 
-    // Esto es antes de guardar en la base de datos y este método se activa al guardar o editar una cita.
+    // Esto es antes de guardar en la base de datos y este método se activa al guardar o editar una cita
     @Override
     public Cita save(Cita cita) {
         if (cita.getMedico() != null && cita.getFecha() != null) {
@@ -42,7 +42,6 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
                 }
             }
         }
-        // si todo está bien guardamos la cita en la base de datos
         return super.save(cita);
     }
 
@@ -124,5 +123,15 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
     // devuelve todas las citas de un médico en concreto
     public List<Cita> findByMedicoId(Long medicoId) {
         return medicoId != null ? repository.findByMedicoId(medicoId) : List.of();
+    }
+
+    public List<Object[]> countCitasPorDia() {
+        return repository.countCitasPorDia();
+    }
+
+    public double calculateTotalRevenue() {
+        return repository.findAll().stream()
+            .mapToDouble(Cita::getPrecio)
+            .sum();
     }
 }

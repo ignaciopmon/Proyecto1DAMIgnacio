@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Estadísticas de la Clínica - ClinicSoft</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg(v=1)}">
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <div th:replace="~{fragments/navbar::navbar}"></div>
+
+    <main class="container my-5 flex-grow-1">
+
+        <div class="row align-items-center mb-5">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none">Inicio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Panel de Control</li>
+                    </ol>
+                </nav>
+                <h1 class="h2 fw-bold text-dark mb-0">Estadísticas y Análisis Clínico</h1>
+                <p class="text-muted mb-0">Resumen operativo y volumetría de la actividad de ClinicSoft</p>
+            </div>
+            <div class="col-auto">
+                <div th:replace="~{fragments/indexreturn::indexreturn}"></div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <p class="text-muted text-uppercase fw-semibold small mb-1">Citas Agendadas</p>
+                        <h2 class="fw-bold mb-0 text-dark" th:text="${totalCitas}">0</h2>
+                        <small class="text-info">Volumen total acumulado</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <p class="text-muted text-uppercase fw-semibold small mb-1">Ingresos de Consultas</p>
+                        <h2 class="fw-bold mb-0 text-dark" 
+                            th:text="${#numbers.formatDecimal(totalRevenue, 1, 'POINT', 2, 'COMMA') + ' €'}">0,00 €</h2>
+                        <small class="text-success">Facturación estimada</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <p class="text-muted text-uppercase fw-semibold small mb-1">Personal Médico</p>
+                        <h2 class="fw-bold mb-0 text-dark" th:text="${totalMedicos}">0</h2>
+                        <small class="text-primary">Especialistas en plantilla</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <p class="text-muted text-uppercase fw-semibold small mb-1">Pacientes Registrados</p>
+                        <h2 class="fw-bold mb-0 text-dark" th:text="${totalPacientes}">0</h2>
+                        <small class="text-warning">Historial único clínico</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-12 col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="fw-bold text-dark mb-1">Rendimiento y Actividad de Médicos</h5>
+                        <p class="text-muted small mb-0">Ranking de especialistas con mayor actividad asistencial</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Nombre del Especialista</th>
+                                    <th>Especialidad</th>
+                                    <th class="text-end pe-4">Consultas Realizadas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="row : ${medicosActivos}">
+                                    <td class="ps-4 fw-semibold text-dark" th:text="${row[0].nombre}">Dr. Carlos Gutiérrez</td>
+                                    <td th:text="${row[0].especialidad}">Cardiología</td>
+                                    <td class="text-end pe-4 fw-bold text-secondary" th:text="${row[1]}">0</td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(medicosActivos)}">
+                                    <td colspan="3" class="text-center py-4 text-muted">No se registran datos médicos.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="fw-bold text-dark mb-1">Pacientes con Mayor Frecuencia</h5>
+                        <p class="text-muted small mb-0">Seguimiento de pacientes recurrentes en consultas médicas</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Paciente</th>
+                                    <th>Contacto Telefónico</th>
+                                    <th class="text-end pe-4">Citas Totales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="row : ${pacientesFrecuentes}">
+                                    <td class="ps-4">
+                                        <span class="fw-semibold text-dark d-block" th:text="${row[0].nombre}">Paciente Nombre</span>
+                                        <span class="text-muted small" th:text="${row[0].email}">email@dominio.com</span>
+                                    </td>
+                                    <td th:text="${row[0].telefono}">600000000</td>
+                                    <td class="text-end pe-4 fw-bold text-secondary" th:text="${row[1]}">0</td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(pacientesFrecuentes)}">
+                                    <td colspan="3" class="text-center py-4 text-muted">No se registran datos de pacientes.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="fw-bold text-dark mb-1">Volumetría de Citas por Día</h5>
+                        <p class="text-muted small mb-0">Distribución cronológica de la demanda asistencial diaria</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Fecha de Atención</th>
+                                    <th class="text-end pe-4">Citas Agendadas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="row : ${citasPorDia}">
+                                    <td class="ps-4 fw-semibold text-dark" th:text="${#dates.format(row[0], 'dd/MM/yyyy')}">28/05/2026</td>
+                                    <td class="text-end pe-4 fw-bold text-primary" th:text="${row[1]}">0</td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(citasPorDia)}">
+                                    <td colspan="2" class="text-center py-4 text-muted">No se registran citas agendadas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div th:replace="~{fragments/footer::footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
