@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -42,9 +44,11 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/")
                 .permitAll()
             )
+
+            // configuración de logout personalizada para que se haga con GET a /logout y redirija a /login?logout
             .logout(logout -> logout
-                // tras cerrar sesión volvemos a la portada
-                .logoutSuccessUrl("/")
+                .logoutRequestMatcher(PathPatternRequestMatcher.pathPattern(HttpMethod.GET, "/logout"))
+                .logoutSuccessUrl("/login?logout")
                 .permitAll()
             );
 
