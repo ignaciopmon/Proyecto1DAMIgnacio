@@ -185,8 +185,13 @@ public class CitasController {
         if (medicoId != null && fechaDia != null) {
             medicoService.findById(medicoId).ifPresent(medico -> {
                 model.addAttribute("medico", medico);
-                model.addAttribute("horasDisponibles",
-                        citaService.getHorasDisponibles(medico, fechaDia));
+                // obtenemos las horas disponibles para ese médico y día y como al editar la hora seleccionada actual no va a aparecer pues la añadimos        
+                java.util.List<LocalTime> horas = citaService.getHorasDisponibles(medico, fechaDia);
+                if (horaSeleccionada != null && !horas.contains(horaSeleccionada)) {
+                    horas.add(horaSeleccionada);
+                    java.util.Collections.sort(horas);
+                }
+                model.addAttribute("horasDisponibles", horas);
             });
         }
 
