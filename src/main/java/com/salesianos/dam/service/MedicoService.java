@@ -1,11 +1,13 @@
 package com.salesianos.dam.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.salesianos.dam.Medico;
 import com.salesianos.dam.enums.EstadosCita;
 import com.salesianos.dam.exception.MedicoConCitasActivasException;
 import com.salesianos.dam.repository.MedicoRepository;
+import java.util.List;
 
 @Service
 public class MedicoService extends BaseServiceImpl<Medico, Long, MedicoRepository> {
@@ -30,7 +32,7 @@ public class MedicoService extends BaseServiceImpl<Medico, Long, MedicoRepositor
         return repository.findByUsuario(usuario).orElse(null);
     }
 
-    public java.util.List<Object[]> findMedicosMasActivos() {
+    public List<Object[]> findMedicosMasActivos() {
         return repository.findMedicosMasActivos();
     }
 
