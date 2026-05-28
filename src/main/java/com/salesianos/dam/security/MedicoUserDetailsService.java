@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import com.salesianos.dam.Medico;
 import com.salesianos.dam.repository.MedicoRepository;
 
-// Esta clase sirve para que Spring Security busque los usuarios en nuestra base de datos
-// en lugar de usar usuarios fijos en memoria.
 @Service
 public class MedicoUserDetailsService implements UserDetailsService {
 
@@ -29,19 +27,19 @@ public class MedicoUserDetailsService implements UserDetailsService {
         if ("admin".equals(username)) {
             return User.builder()
                 .username("admin")
-                .password(passwordEncoder.encode("admin")) // Ciframos su contraseña sobre la marcha
+                .password(passwordEncoder.encode("admin"))
                 .roles(UserRole.ADMIN.name())
                 .build();
         }
 
-        // Si no es el admin, buscamos el médico en la base de datos por su nombre de usuario
+        // Si no es el admin buscamos el médico en la base de datos por su usuario
         Medico medico = medicoRepository.findByUsuario(username)
             .orElseThrow(() -> new UsernameNotFoundException("No existe ningún médico con el usuario: " + username));
 
-        // Devolvemos el usuario con su contraseña cifrada de la base de datos y su rol correspondiente
+
         return User.builder()
             .username(medico.getUsuario())
-            .password(medico.getPassword()) // La contraseña que ya está guardada cifrada en la base de datos
+            .password(medico.getPassword())
             .roles(UserRole.MEDICO.name())
             .build();
     }
