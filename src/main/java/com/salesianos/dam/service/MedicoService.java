@@ -30,5 +30,9 @@ public class MedicoService extends BaseServiceImpl<Medico, Long, MedicoRepositor
         return repository.findByUsuario(usuario).orElse(null);
     }
 
+    public java.util.List<Object[]> findMedicosMasActivos() {
+        return repository.findMedicosMasActivos();
+    }
+
 }
 

@@ -124,4 +124,14 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
     public List<Cita> findByMedicoId(Long medicoId) {
         return medicoId != null ? repository.findByMedicoId(medicoId) : List.of();
     }
+
+    public List<Object[]> countCitasPorDia() {
+        return repository.countCitasPorDia();
+    }
+
+    public double calculateTotalRevenue() {
+        return repository.findAll().stream()
+            .mapToDouble(Cita::getPrecio)
+            .sum();
+    }
 }
