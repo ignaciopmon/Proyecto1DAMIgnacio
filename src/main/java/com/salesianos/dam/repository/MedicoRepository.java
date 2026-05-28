@@ -12,7 +12,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
     java.util.Optional<Medico> findByUsuario(String usuario);
 
-    @Query("SELECT m, COUNT(c) FROM Medico m LEFT JOIN m.citas c GROUP BY m ORDER BY COUNT(c) DESC")
+    @Query("SELECT m, COUNT(c) FROM Medico m LEFT JOIN m.citas c GROUP BY m ORDER BY COUNT(c) DESC LIMIT 5")
     List<Object[]> findMedicosMasActivos();
 
 }

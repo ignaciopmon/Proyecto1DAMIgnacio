@@ -79,8 +79,8 @@
             <div class="col-12 col-lg-6">
                 <div class="card h-100 border-0 shadow-sm">
                     <div class="card-header bg-white py-3 border-0">
-                        <h5 class="fw-bold text-dark mb-1">Rendimiento y Actividad de Médicos</h5>
-                        <p class="text-muted small mb-0">Ranking de especialistas con mayor actividad asistencial</p>
+                        <h5 class="fw-bold text-dark mb-1">Top 5 Especialistas Más Activos</h5>
+                        <p class="text-muted small mb-0">Especialistas con mayor número de consultas registradas</p>
                     </div>
                     <div class="table-responsive">
                         <table class="table align-middle table-hover mb-0">
@@ -109,8 +109,8 @@
             <div class="col-12 col-lg-6">
                 <div class="card h-100 border-0 shadow-sm">
                     <div class="card-header bg-white py-3 border-0">
-                        <h5 class="fw-bold text-dark mb-1">Pacientes con Mayor Frecuencia</h5>
-                        <p class="text-muted small mb-0">Seguimiento de pacientes recurrentes en consultas médicas</p>
+                        <h5 class="fw-bold text-dark mb-1">Top 5 Pacientes Recurrentes</h5>
+                        <p class="text-muted small mb-0">Pacientes con mayor número de consultas acumuladas</p>
                     </div>
                     <div class="table-responsive">
                         <table class="table align-middle table-hover mb-0">
@@ -144,15 +144,15 @@
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white py-3 border-0">
-                        <h5 class="fw-bold text-dark mb-1">Volumetría de Citas por Día</h5>
-                        <p class="text-muted small mb-0">Distribución cronológica de la demanda asistencial diaria</p>
+                        <h5 class="fw-bold text-dark mb-1">Días con Más Citas Pendientes</h5>
+                        <p class="text-muted small mb-0">Próximos días ordenados por el volumen de consultas pendientes de atención</p>
                     </div>
                     <div class="table-responsive">
                         <table class="table align-middle table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th class="ps-4">Fecha de Atención</th>
-                                    <th class="text-end pe-4">Citas Agendadas</th>
+                                    <th class="text-end pe-4">Citas Pendientes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,7 +161,7 @@
                                     <td class="text-end pe-4 fw-bold text-primary" th:text="${row[1]}">0</td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(citasPorDia)}">
-                                    <td colspan="2" class="text-center py-4 text-muted">No se registran citas agendadas.</td>
+                                    <td colspan="2" class="text-center py-4 text-muted">No se registran citas pendientes.</td>
                                 </tr>
                             </tbody>
                         </table>

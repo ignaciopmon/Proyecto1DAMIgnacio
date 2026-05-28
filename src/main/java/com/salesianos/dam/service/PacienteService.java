@@ -21,7 +21,7 @@ public class PacienteService extends BaseServiceImpl<Paciente, Long, PacienteRep
                 throw new PacienteConCitasActivasException();
             }
         });
-        // Si el paciente está libre de citas pendientes lo borramos
+
         super.deleteById(id);
     }
 
