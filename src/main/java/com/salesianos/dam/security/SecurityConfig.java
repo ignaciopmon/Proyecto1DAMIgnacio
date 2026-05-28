@@ -54,23 +54,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        // creamos el usuario "medico" con contraseña "medico" y su rol 
-        UserDetails medico = User.builder()
-            .username("medico")
-            .password(passwordEncoder.encode("medico"))
-            .roles(UserRole.MEDICO.name())
-            .build();
-            
-        // creamos el usuario "admin" con contraseña "admin"
-        UserDetails admin = User.builder()
-            .username("admin")
-            .password(passwordEncoder.encode("admin"))
-            .roles(UserRole.ADMIN.name())
-            .build();
-
-        return new InMemoryUserDetailsManager(medico, admin);
-    }
 }

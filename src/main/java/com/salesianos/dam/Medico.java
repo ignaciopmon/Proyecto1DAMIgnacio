@@ -34,6 +34,8 @@ public class Medico {
 
     private String usuario;
 
+    private String password;
+
     @Builder.Default
     @NotNull(message = "La duración de la cita es obligatoria.")
     @Min(value = 5, message = "La duración de la cita debe ser de al menos 5 minutos.")
