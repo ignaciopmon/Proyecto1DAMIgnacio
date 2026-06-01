@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.salesianos.dam.enums.EstadosCita;
@@ -28,6 +29,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private CitaService citaService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -127,12 +131,13 @@ public class DataLoader implements CommandLineRunner {
                 pacientes.add(p);
             }
 
-            Medico m1 = Medico.builder().nombre("Dr. Carlos Gutiérrez").especialidad("Cardiología").usuario("medico").duracionCitaMinutos(30).precioPorMinuto(1.50).build();
-            Medico m2 = Medico.builder().nombre("Dra. Ana Martínez").especialidad("Pediatría").duracionCitaMinutos(20).precioPorMinuto(2.00).build();
-            Medico m3 = Medico.builder().nombre("Dr. Luis Fernández").especialidad("Dermatología").duracionCitaMinutos(15).precioPorMinuto(2.50).build();
-            Medico m4 = Medico.builder().nombre("Dra. Sofía Vega").especialidad("Ginecología").duracionCitaMinutos(30).precioPorMinuto(2.00).build();
-            Medico m5 = Medico.builder().nombre("Dr. Miguel Herrero").especialidad("Traumatología").duracionCitaMinutos(45).precioPorMinuto(1.80).build();
-            Medico m6 = Medico.builder().nombre("Dra. Elena Ramos").especialidad("Oftalmología").duracionCitaMinutos(20).precioPorMinuto(2.20).build();
+            
+            Medico m1 = Medico.builder().nombre("Dr. Carlos Gutiérrez").especialidad("Cardiología").usuario("medico").password(passwordEncoder.encode("medico")).duracionCitaMinutos(30).precioPorMinuto(1.50).build();
+            Medico m2 = Medico.builder().nombre("Dra. Ana Martínez").especialidad("Pediatría").usuario("ana").password(passwordEncoder.encode("medico")).duracionCitaMinutos(20).precioPorMinuto(2.00).build();
+            Medico m3 = Medico.builder().nombre("Dr. Luis Fernández").especialidad("Dermatología").usuario("luis").password(passwordEncoder.encode("medico")).duracionCitaMinutos(15).precioPorMinuto(2.50).build();
+            Medico m4 = Medico.builder().nombre("Dra. Sofía Vega").especialidad("Ginecología").usuario("sofia").password(passwordEncoder.encode("medico")).duracionCitaMinutos(30).precioPorMinuto(2.00).build();
+            Medico m5 = Medico.builder().nombre("Dr. Miguel Herrero").especialidad("Traumatología").usuario("miguel").password(passwordEncoder.encode("medico")).duracionCitaMinutos(45).precioPorMinuto(1.80).build();
+            Medico m6 = Medico.builder().nombre("Dra. Elena Ramos").especialidad("Oftalmología").usuario("elena").password(passwordEncoder.encode("medico")).duracionCitaMinutos(20).precioPorMinuto(2.20).build();
 
             medicoService.save(m1);
             medicoService.save(m2);

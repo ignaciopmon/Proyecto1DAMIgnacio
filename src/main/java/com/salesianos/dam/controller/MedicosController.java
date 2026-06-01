@@ -12,12 +12,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.validation.BindingResult;
 import com.salesianos.dam.Medico;
 import com.salesianos.dam.service.MedicoService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.validation.Valid;
 
 @Controller
 public class MedicosController {
     @Autowired
     private MedicoService medicoService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/medicos")
     public String medicos(Model model) {
@@ -33,6 +37,28 @@ public class MedicosController {
 
     @PostMapping("/medicos/nuevo/submit")
     public String procesarFormulario(@Valid @ModelAttribute("medico") Medico medico) {
+        // Si el médico es nuevo y no tiene usuario asignado le creamos uno automáticamente
+        if (medico.getUsuario() == null || medico.getUsuario().isBlank()) {
+            // aquí limpiamos el nombre pasando a minúsculas, quitamos Dr. o Dra. y quitamos acentos
+            String nombreLimpio = medico.getNombre()
+                .toLowerCase()
+                .replace("dr. ", "")
+                .replace("dra. ", "")
+                .replaceAll("[áàäâ]", "a")
+                .replaceAll("[éèëê]", "e")
+                .replaceAll("[íìïî]", "i")
+                .replaceAll("[óòöô]", "o")
+                .replaceAll("[úùüû]", "u")
+                .replaceAll("[ñ]", "n")
+                .replaceAll("[^a-z0-9]", ""); // Solo dejamos letras normales de la a a la z
+            medico.setUsuario(nombreLimpio);
+        }
+
+        // Si es un médico nuevo sin contraseña le ponemos la contraseña por defecto "medico"
+        if (medico.getPassword() == null || medico.getPassword().isBlank()) {
+            medico.setPassword(passwordEncoder.encode("medico"));
+        }
+
         medicoService.save(medico);
         return "redirect:/medicos";
     }
