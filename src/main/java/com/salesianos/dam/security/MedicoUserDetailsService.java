@@ -32,7 +32,7 @@ public class MedicoUserDetailsService implements UserDetailsService {
                 .build();
         }
 
-        // Si no es el admin buscamos el médico en la base de datos por su usuario
+        // si no es el admin buscamos el médico en la base de datos por su usuario
         Medico medico = medicoRepository.findByUsuario(username)
             .orElseThrow(() -> new UsernameNotFoundException("No existe ningún médico con el usuario: " + username));
 
