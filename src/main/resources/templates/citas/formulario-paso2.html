@@ -104,7 +104,7 @@
                                     <select id="estado" th:field="*{estado}" class="form-select border-start-0 ps-0" required>
                                         <option th:each="est : ${estados}"
                                                 th:value="${est}"
-                                                th:text="${#strings.replace(est.toString(), '_', ' ')}">
+                                                th:text="${est.displayName}">
                                         </option>
                                     </select>
                                 </div>

@@ -69,7 +69,7 @@
                                     <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
                                         <option th:each="est : ${estados}"
                                                 th:value="${est}"
-                                                th:text="${#strings.replace(est.toString(), '_', ' ')}"
+                                                th:text="${est.displayName}"
                                                 th:selected="${cita.estado == est}">
                                         </option>
                                     </select>
