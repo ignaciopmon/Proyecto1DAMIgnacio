@@ -153,6 +153,22 @@ public class CitasController {
         return "redirect:/citas";
     }
 
+    @GetMapping("/citas/ver/{id}")
+    public String verCita(@PathVariable Long id, Model model, java.security.Principal principal) {
+        Cita cita = citaService.findById(id).orElse(null);
+        if (cita == null) {
+            return "redirect:/citas";
+        }
+
+        Medico medicoLogueado = getMedicoLogueado(principal);
+        if (medicoLogueado != null && cita.getMedico() != null && !cita.getMedico().getId().equals(medicoLogueado.getId())) {
+            return "redirect:/citas";
+        }
+
+        model.addAttribute("cita", cita);
+        return "citas/detalle";
+    }
+
 
     // permite actualizar el estado de una cita desde la propia lista pero uun médico solo puede alterar el estado de sus propias citas
     @PostMapping("/citas/{id}/estado")

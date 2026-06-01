@@ -22,7 +22,7 @@
                     <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/estadisticas}">Estadísticas</a>
                     <a sec:authorize="hasRole('MEDICO')" class="nav-link" th:href="@{/medicos/perfil}">Mi Perfil</a>
                 </div>
-                <div class="navbar-nav">
+                <div class="navbar-nav align-items-lg-center gap-2">
                     <span class="nav-item nav-link text-white">
                         Hola, <span sec:authentication="name">usuario</span>
                     </span>
