@@ -51,7 +51,7 @@
                             <th>Paciente</th>
                             <th>Médico Asignado</th>
                             <th>Observaciones</th>
-                            <th sec:authorize="hasRole('ADMIN')" class="text-end pe-4">Acciones</th>
+                            <th class="text-end pe-4">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -81,11 +81,13 @@
                             <td th:text="${cita.medico != null} ? ${cita.medico.nombre} : 'Sin médico'">Dr. Carlos</td>
                             <td>
                                 <small class="text-muted" th:text="${cita.observaciones != null && !cita.observaciones.trim().isEmpty()} ? ${cita.observaciones} : '—'">Ninguna</small>
-                            </td>
-                            <td sec:authorize="hasRole('ADMIN')" class="text-end pe-4">
+                            <td class="text-end pe-4">
                                 <div class="d-inline-flex gap-1 justify-content-end">
-                                    <a th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-sm btn-outline-warning">Editar</a>
-                                    <a th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-sm btn-outline-danger"
+                                    <a th:href="@{'/citas/ver/' + ${cita.id}}" class="btn btn-sm btn-outline-info d-inline-flex align-items-center gap-1">
+                                        <i class="bi bi-ticket-perforated"></i> Ver
+                                    </a>
+                                    <a sec:authorize="hasRole('ADMIN')" th:href="@{'/citas/editar/' + ${cita.id}}" class="btn btn-sm btn-outline-warning">Editar</a>
+                                    <a sec:authorize="hasRole('ADMIN')" th:href="@{'/citas/eliminar/' + ${cita.id}}" class="btn btn-sm btn-outline-danger"
                                        onclick="return confirm('¿Estás totalmente seguro de que deseas eliminar esta cita médica? Esta acción no se puede deshacer.')">Eliminar</a>
                                 </div>
                             </td>
