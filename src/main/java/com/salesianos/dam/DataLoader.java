@@ -132,12 +132,12 @@ public class DataLoader implements CommandLineRunner {
             }
 
             
-            Medico m1 = Medico.builder().nombre("Dr. Carlos Gutiérrez").especialidad("Cardiología").usuario("medico").password(passwordEncoder.encode("medico")).duracionCitaMinutos(30).precioPorMinuto(1.50).build();
-            Medico m2 = Medico.builder().nombre("Dra. Ana Martínez").especialidad("Pediatría").usuario("ana").password(passwordEncoder.encode("medico")).duracionCitaMinutos(20).precioPorMinuto(2.00).build();
-            Medico m3 = Medico.builder().nombre("Dr. Luis Fernández").especialidad("Dermatología").usuario("luis").password(passwordEncoder.encode("medico")).duracionCitaMinutos(15).precioPorMinuto(2.50).build();
-            Medico m4 = Medico.builder().nombre("Dra. Sofía Vega").especialidad("Ginecología").usuario("sofia").password(passwordEncoder.encode("medico")).duracionCitaMinutos(30).precioPorMinuto(2.00).build();
-            Medico m5 = Medico.builder().nombre("Dr. Miguel Herrero").especialidad("Traumatología").usuario("miguel").password(passwordEncoder.encode("medico")).duracionCitaMinutos(45).precioPorMinuto(1.80).build();
-            Medico m6 = Medico.builder().nombre("Dra. Elena Ramos").especialidad("Oftalmología").usuario("elena").password(passwordEncoder.encode("medico")).duracionCitaMinutos(20).precioPorMinuto(2.20).build();
+            Medico m1 = Medico.builder().nombre("Dr. Carlos Gutiérrez").especialidad("Cardiología").usuario("carlos").password(passwordEncoder.encode("carlos")).duracionCitaMinutos(30).precioPorMinuto(1.50).build();
+            Medico m2 = Medico.builder().nombre("Dra. Ana Martínez").especialidad("Pediatría").usuario("ana").password(passwordEncoder.encode("ana")).duracionCitaMinutos(20).precioPorMinuto(2.00).build();
+            Medico m3 = Medico.builder().nombre("Dr. Luis Fernández").especialidad("Dermatología").usuario("luis").password(passwordEncoder.encode("luis")).duracionCitaMinutos(15).precioPorMinuto(2.50).build();
+            Medico m4 = Medico.builder().nombre("Dra. Sofía Vega").especialidad("Ginecología").usuario("sofia").password(passwordEncoder.encode("sofia")).duracionCitaMinutos(30).precioPorMinuto(2.00).build();
+            Medico m5 = Medico.builder().nombre("Dr. Miguel Herrero").especialidad("Traumatología").usuario("miguel").password(passwordEncoder.encode("miguel")).duracionCitaMinutos(45).precioPorMinuto(1.80).build();
+            Medico m6 = Medico.builder().nombre("Dra. Elena Ramos").especialidad("Oftalmología").usuario("elena").password(passwordEncoder.encode("elena")).duracionCitaMinutos(20).precioPorMinuto(2.20).build();
 
             medicoService.save(m1);
             medicoService.save(m2);
