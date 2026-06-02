@@ -1,21 +1,18 @@
 package com.salesianos.dam.repository;
 
-import java.util.Arrays;
 import java.util.List;
-
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.salesianos.dam.Medico;
 
 @Repository
-public class MedicoRepository {
+public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
-        public List<Medico> getMedicos() {
-                return Arrays.asList(
-                                new Medico("M001", "Medicina general", "Dra. Laura Martin"),
-                                new Medico("M002", "Pediatria", "Dr. Carlos Ruiz"),
-                                new Medico("M003", "Traumatologia", "Dra. Elena Torres"));
-                
-        }
+    java.util.Optional<Medico> findByUsuario(String usuario);
+
+    @Query("SELECT m, COUNT(c) FROM Medico m LEFT JOIN m.citas c GROUP BY m ORDER BY COUNT(c) DESC LIMIT 5")
+    List<Object[]> findMedicosMasActivos();
 
 }

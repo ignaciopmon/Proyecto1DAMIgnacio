@@ -1,0 +1,12 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="footer">
+    <footer sec:authorize="isAuthenticated()" class="text-center py-4 bg-white border-top mt-auto">
+        <div class="container">
+            <span class="text-secondary">&copy; 2026 ClinicSoft</span>
+        </div>
+    </footer>
+    <footer sec:authorize="isAnonymous()" class="text-center py-4 bg-white border-top fixed-bottom shadow-sm">
+        <div class="container">
+            <span class="text-secondary">&copy; 2026 ClinicSoft</span>
+        </div>
+    </footer>
+</th:block>

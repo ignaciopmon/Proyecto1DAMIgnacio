@@ -1,0 +1,70 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="navbar">
+    <nav sec:authorize="isAnonymous()" class="navbar navbar-expand bg-body border-bottom border-light-subtle sticky-top shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2 text-primary" th:href="@{/}">
+                <i class="bi bi-heart-pulse-fill"></i> ClinicSoft
+            </a>
+        </div>
+    </nav>
+
+    <nav sec:authorize="isAuthenticated()" class="navbar navbar-expand-lg bg-body border-bottom border-light-subtle sticky-top shadow-sm py-2">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2 text-primary" th:href="@{/}">
+                <i class="bi bi-heart-pulse-fill"></i> ClinicSoft
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav me-auto my-2 my-lg-0 gap-1">
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 fw-semibold rounded" th:href="@{/pacientes}">
+                        <i class="bi bi-people-fill text-secondary"></i> Pacientes
+                    </a>
+                    <a sec:authorize="hasRole('ADMIN')" class="nav-link d-flex align-items-center gap-2 px-3 fw-semibold rounded" th:href="@{/medicos}">
+                        <i class="bi bi-person-heart text-secondary"></i> Médicos
+                    </a>
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 fw-semibold rounded" th:href="@{/citas}">
+                        <i class="bi bi-calendar3 text-secondary"></i> Citas
+                    </a>
+                    <a sec:authorize="hasRole('ADMIN')" class="nav-link d-flex align-items-center gap-2 px-3 fw-semibold rounded" th:href="@{/estadisticas}">
+                        <i class="bi bi-bar-chart-line-fill text-secondary"></i> Estadísticas
+                    </a>
+                    <a sec:authorize="hasRole('MEDICO')" class="nav-link d-flex align-items-center gap-2 px-3 fw-semibold rounded" th:href="@{/medicos/perfil}">
+                        <i class="bi bi-person-circle text-secondary"></i> Mi Perfil
+                    </a>
+                </div>
+                
+                <div class="d-flex align-items-center gap-3 ms-lg-3 mt-3 mt-lg-0 pt-3 pt-lg-0 border-top border-light-subtle border-lg-0 justify-content-end">
+                    <div class="dropdown">
+                        <button class="btn btn-link text-decoration-none dropdown-toggle d-flex align-items-center gap-2 text-body py-1 px-2 rounded border border-light-subtle shadow-sm bg-body-tertiary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <span class="small fw-semibold" sec:authentication="name">usuario</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3">
+                            <li><h6 class="dropdown-header">Panel de Control</h6></li>
+                            <li sec:authorize="hasRole('MEDICO')">
+                                <a class="dropdown-item d-flex align-items-center gap-2 py-2" th:href="@{/medicos/perfil}">
+                                    <i class="bi bi-person text-secondary"></i> Mi Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 py-2" th:href="@{/}">
+                                    <i class="bi bi-grid text-secondary"></i> Inicio
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" th:href="@{/logout}">
+                                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</th:block>

@@ -1,1 +1,5 @@
-<p th:fragment="indexreturn"><a th:href="@{/inicio}">Volver al inicio</a></p>
+<th:block xmlns:th="http://www.thymeleaf.org">
+    <a th:fragment="indexreturn" th:href="@{/}" class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2">
+        <i class="bi bi-arrow-left"></i> Volver al menú
+    </a>
+</th:block>

@@ -5,20 +5,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.salesianos.dam.service.ClinicService;
+import com.salesianos.dam.service.CitaService;
+import com.salesianos.dam.service.MedicoService;
+import com.salesianos.dam.service.PacienteService;
 
 @Controller
 public class MainController {
 
     @Autowired
-    private ClinicService clinicService;
+    private PacienteService pacienteService;
+    
+    @Autowired
+    private MedicoService medicoService;
 
-    @GetMapping({ "/", "/inicio" })
-    public String inicio(Model model) {
-        model.addAttribute("numeroPacientes", clinicService.getPacientes().size());
-        model.addAttribute("numeroMedicos", clinicService.getMedicos().size());
-        model.addAttribute("numeroCitas", clinicService.getCitas().size());
+    @Autowired
+    private CitaService citaService;
+
+    @GetMapping({ "/", "/index", "/home", "/inicio" })
+    public String index(Model model) {
+        model.addAttribute("numeroPacientes", pacienteService.findAll().size());
+        model.addAttribute("numeroMedicos", medicoService.findAll().size());
+        model.addAttribute("numeroCitas", citaService.findAll().size());
         return "index";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "logout";
     }
 
 }
