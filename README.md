@@ -103,7 +103,7 @@ Usuario: ana      Password: ana
 Usuario: luis     Password: luis
 Usuario: sofia    Password: sofia
 Usuario: miguel   Password: miguel
-Usuario: elena    Password: elena
+Usuario: user    Password: user
 ```
 
 Si se crea un medico nuevo sin indicar usuario o password, la aplicacion genera un usuario a partir del nombre y asigna la password por defecto `medico`.
