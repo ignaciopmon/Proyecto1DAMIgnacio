@@ -6,7 +6,7 @@ INSERT INTO medico (id, nombre, especialidad, usuario, password, duracion_cita_m
 INSERT INTO medico (id, nombre, especialidad, usuario, password, duracion_cita_minutos, precio_por_minuto) VALUES (3, 'Dr. Luis Fernández', 'Dermatología', 'luis', '{bcrypt}$2a$10$Mm57m1L4GG9CsZMq57fPbuFGNjEmCVqOepMJmr1VkaM9Ap1Bu0A2m', 15, 2.50);
 INSERT INTO medico (id, nombre, especialidad, usuario, password, duracion_cita_minutos, precio_por_minuto) VALUES (4, 'Dra. Sofía Vega', 'Ginecología', 'sofia', '{bcrypt}$2a$10$h.HsVISpRZXCnq/DEksFueT0x/NaBObt8Yvq91Ff2qFNXJvF8r2W2', 30, 2.00);
 INSERT INTO medico (id, nombre, especialidad, usuario, password, duracion_cita_minutos, precio_por_minuto) VALUES (5, 'Dr. Miguel Herrero', 'Traumatología', 'miguel', '{bcrypt}$2a$10$JBM5PHE/jSaYzRzDCP9fKuIjies.DEHRQc47TpCmY2FjqxaVfBhkG', 45, 1.80);
-INSERT INTO medico (id, nombre, especialidad, usuario, password, duracion_cita_minutos, precio_por_minuto) VALUES (6, 'Dra. Elena Ramos', 'Oftalmología', 'elena', '{bcrypt}$2a$10$TK6LegeeguofvkFTty90PeXHI5pdyX08gGVHa/2VIHPYyBmd1WumC', 20, 2.20);
+INSERT INTO medico (id, nombre, especialidad, usuario, password, duracion_cita_minutos, precio_por_minuto) VALUES (6, 'Dr. User', 'Oftalmología', 'user', '{bcrypt}$2a$10$BuQfcAuntqYWKjmVPxb9TelphW9i1FZB7ZgvcyFhj/ToT2QoFzgqW', 20, 2.20);
 
 -- Pacientes
 INSERT INTO paciente (id, nombre, email, telefono) VALUES (1, 'Alejandro Ruiz', 'alejandro.ruiz@email.com', '601234567');
