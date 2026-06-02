@@ -146,7 +146,7 @@ public class DataLoader implements CommandLineRunner {
         Medico m3 = Medico.builder().nombre("Dr. Luis Fernández").especialidad("Dermatología").usuario("luis").password(passwordEncoder.encode("luis")).duracionCitaMinutos(15).precioPorMinuto(2.50).build();
         Medico m4 = Medico.builder().nombre("Dra. Sofía Vega").especialidad("Ginecología").usuario("sofia").password(passwordEncoder.encode("sofia")).duracionCitaMinutos(30).precioPorMinuto(2.00).build();
         Medico m5 = Medico.builder().nombre("Dr. Miguel Herrero").especialidad("Traumatología").usuario("miguel").password(passwordEncoder.encode("miguel")).duracionCitaMinutos(45).precioPorMinuto(1.80).build();
-        Medico m6 = Medico.builder().nombre("Dra. Elena Ramos").especialidad("Oftalmología").usuario("elena").password(passwordEncoder.encode("elena")).duracionCitaMinutos(20).precioPorMinuto(2.20).build();
+        Medico m6 = Medico.builder().nombre("Dr. User").especialidad("Oftalmología").usuario("user").password(passwordEncoder.encode("user")).duracionCitaMinutos(20).precioPorMinuto(2.20).build();
 
         medicoService.save(m1);
         medicoService.save(m2);
@@ -249,8 +249,12 @@ public class DataLoader implements CommandLineRunner {
                 if (horasDisponibles.isEmpty()) {
                     continue;
                 }
-
+                
+                
+             // Si el día es pasado reducimos la carga simulando que solo el 25% de los días hubo cita (1 cita máx)
+             // Si el día es hoy o futuro permitimos más volumen generando de 0 a 2 citas de forma aleatoria
                 int numCitasMax = esPasado ? (random.nextDouble() < 0.25 ? 1 : 0) : random.nextInt(3);
+             // no podemos crear más citas de los huecos horarios reales que tiene disponibles el médico
                 int numCitas = Math.min(numCitasMax, horasDisponibles.size());
                 if (numCitas == 0) {
                     continue;
@@ -274,9 +278,14 @@ public class DataLoader implements CommandLineRunner {
                     if (pacienteElegido == null) {
                         continue;
                     }
-
+                    
+                 // Selecciona una observación médica aleatoria del depósito de la especialidad correspondiente
                     String obs = observaciones[random.nextInt(observaciones.length)];
 
+                    
+                 // definimos del estado de la cita según la línea temporal:
+                 // - Si es una cita del pasado simulamos un 15% de NO_PRESENTADO y un 85% de REALIZADA.
+                 // - Si es una cita de hoy o del futuro se registra siempre como PENDIENTE
                     EstadosCita estado = esPasado 
                         ? ((random.nextDouble() < 0.15) ? EstadosCita.NO_PRESENTADO : EstadosCita.REALIZADA) 
                         : EstadosCita.PENDIENTE;

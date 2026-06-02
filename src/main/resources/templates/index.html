@@ -18,39 +18,63 @@
     <main class="container my-5 flex-grow-1">
         
         <div sec:authorize="isAnonymous()">
-            <div class="p-5 mb-5 bg-white rounded-3 shadow-sm border border-light text-center">
-                <div class="py-4">
-                    <i class="bi bi-heart-pulse-fill text-primary display-1 mb-3 d-inline-block"></i>
-                    <h1 class="display-5 fw-bold text-dark mb-2">Bienvenido a ClinicSoft</h1>
-                    <p class="col-lg-8 mx-auto lead text-secondary">
-                        Sistema integral de gestión clínica para la administración eficiente de pacientes, agendas médicas y facturación de consultas.
+            <div class="row align-items-center g-5 py-4 my-2 bg-white rounded-4 shadow-sm border border-light px-4 px-lg-5">
+                <div class="col-lg-6">
+                    <div class="d-inline-flex align-items-center gap-2 bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-4">
+                        <i class="bi bi-sparkles"></i>
+                        <span class="small fw-bold text-uppercase">Gestión Médica Inteligente</span>
+                    </div>
+                    
+                    <h1 class="display-4 fw-bold text-dark lh-sm mb-3">
+                        Bienvenido a <span class="text-primary">ClinicSoft</span>
+                    </h1>
+                    
+                    <p class="lead text-secondary mb-4 fs-5">
+                        El sistema integral más moderno de administración clínica para la gestión eficiente de pacientes, automatización de agendas médicas y facturación interactiva.
                     </p>
-                </div>
-            </div>
-
-            <div class="row justify-content-center g-4">
-                <div class="col-12 col-md-5 col-lg-4">
-                    <div class="card border-0 shadow-sm rounded-3 h-100 p-4 text-center">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <i class="bi bi-person-badge text-primary fs-1 mb-3 d-block"></i>
-                                <h4 class="card-title fw-bold text-dark mb-2">Área Médica</h4>
-                                <p class="text-secondary small mb-4">Acceso exclusivo para especialistas médicos y personal sanitario en servicio.</p>
+                    
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="card border border-light-subtle shadow-sm rounded-3 p-3 h-100">
+                                <div class="card-body p-2 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-3 d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                                            <i class="bi bi-person-badge fs-4"></i>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-2">Área Médica</h5>
+                                        <p class="text-secondary small mb-4">Acceso exclusivo para especialistas, médicos y personal de enfermería.</p>
+                                    </div>
+                                    <a th:href="@{/login}" class="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-box-arrow-in-right"></i> Acceso Médico
+                                    </a>
+                                </div>
                             </div>
-                            <a th:href="@{/login}" class="btn btn-primary w-100 py-2 fw-semibold">Acceder como Médico</a>
+                        </div>
+                        
+                        <div class="col-sm-6">
+                            <div class="card border border-light-subtle shadow-sm rounded-3 p-3 h-100">
+                                <div class="card-body p-2 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="bg-dark bg-opacity-10 text-dark rounded-3 p-3 d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                                            <i class="bi bi-shield-lock fs-4"></i>
+                                        </div>
+                                        <h5 class="fw-bold text-dark mb-2">Administración</h5>
+                                        <p class="text-secondary small mb-4">Portal de alta de médicos, configuración de clínicas y facturación.</p>
+                                    </div>
+                                    <a th:href="@{/login}" class="btn btn-dark w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-box-arrow-in-right"></i> Acceso Admin
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-12 col-md-5 col-lg-4">
-                    <div class="card border-0 shadow-sm rounded-3 h-100 p-4 text-center">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <i class="bi bi-shield-lock text-dark fs-1 mb-3 d-block"></i>
-                                <h4 class="card-title fw-bold text-dark mb-2">Administración</h4>
-                                <p class="text-secondary small mb-4">Portal de gestión de altas, configuración global y control de facturación.</p>
-                            </div>
-                            <a th:href="@{/login}" class="btn btn-dark w-100 py-2 fw-semibold">Acceder como Admin</a>
+                <div class="col-lg-6">
+                    <div class="position-relative p-2">
+                        <div class="position-absolute bg-primary bg-opacity-10 rounded-4 w-100 h-100 top-0 start-0 d-none d-lg-block ms-3 mt-3" style="z-index: 1;"></div>
+                        <div class="overflow-hidden rounded-4 shadow border border-white border-4 position-relative" style="z-index: 2;">
+                            <img th:src="@{/img/clinicsoft-building.jpg}" alt="ClinicSoft Principal" class="img-fluid w-100">
                         </div>
                     </div>
                 </div>
