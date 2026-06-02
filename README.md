@@ -1,4 +1,4 @@
-# ProyectoIgnacio1DAM
+# Proyecto Ignacio 1DAM
 
 Aplicacion web de gestion para una clinica, desarrollada con Spring Boot. Permite administrar medicos, pacientes y citas, con control de acceso por roles y una base de datos H2 en memoria para pruebas.
 
