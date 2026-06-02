@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
 import com.salesianos.dam.Medico;
 import com.salesianos.dam.service.MedicoService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -98,7 +99,7 @@ public class MedicosController {
     }
 
     @PostMapping("/medicos/perfil/submit")
-    public String guardarPerfil(@Valid @ModelAttribute("medico") Medico medico, org.springframework.validation.BindingResult bindingResult, Model model) {
+    public String guardarPerfil(@Valid @ModelAttribute("medico") Medico medico, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "medicos/perfil";
         }

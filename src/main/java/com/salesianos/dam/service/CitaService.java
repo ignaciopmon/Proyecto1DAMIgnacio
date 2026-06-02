@@ -47,16 +47,15 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
 
     // Este método comprueba si un paciente ya tiene una cita reservada con el mismo médico el mismo día. Y sirve para evitar que alguien reserve varias citas seguidas por error.
     public boolean tieneCitaMismoDia(Long pacienteId, Long medicoId, LocalDate fecha, Long idExcluir) {
-        for (Cita cita : getCitasDelDia(medicoId, fecha)) {
-            // si estamos editando una cita que ya está agendada pues ignoramos su propio ID para que no se cuente a sí misma como duplicada
-            if (Objects.equals(cita.getId(), idExcluir)) {
-                continue;
-            }
-            if (cita.getPaciente() != null && Objects.equals(cita.getPaciente().getId(), pacienteId)) {
-                return true;
-            }
+        LocalDateTime inicioDia = fecha.atStartOfDay();
+        LocalDateTime finDia = fecha.atTime(LocalTime.MAX);
+
+        if (idExcluir == null) {
+            return repository.existsByPacienteIdAndMedicoIdAndFechaBetween(pacienteId, medicoId, inicioDia, finDia);
         }
-        return false;
+
+        // si estamos editando una cita que ya está agendada pues ignoramos su propio ID para que no se cuente a sí misma como duplicada
+        return repository.existsByPacienteIdAndMedicoIdAndFechaBetweenAndIdNot(pacienteId, medicoId, inicioDia, finDia, idExcluir);
     }
 
     // Buscamos en la base de datos todas las citas que tiene un médico concreto en un día concreto
@@ -64,7 +63,7 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
         return repository.findByMedicoIdAndFechaBetween(
             medicoId, 
             fecha.atStartOfDay(), 
-            fecha.atTime(23, 59, 59)
+            fecha.atTime(LocalTime.MAX)
         );
     }
 
@@ -97,7 +96,7 @@ public class CitaService extends BaseServiceImpl<Cita, Long, CitaRepository> {
             }
             
             LocalDateTime inicioExistente = citaExistente.getFecha();
-            LocalDateTime finExistente = inicioExistente.plusMinutes(getDuracionCita(medico));
+            LocalDateTime finExistente = inicioExistente.plusMinutes(citaExistente.getDuracionMinutos());
 
             // Si el inicio de nuestra cita es antes del fin de la otra y el fin de nustra cita es después del inicio de la otra pues chocan
             if (inicioCita.isBefore(finExistente) && finCita.isAfter(inicioExistente)) {

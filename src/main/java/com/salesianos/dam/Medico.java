@@ -14,7 +14,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -47,6 +49,8 @@ public class Medico {
     private Double precioPorMinuto = 1.50;
 
     @Builder.Default
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "medico")
     private List<Cita> citas = new ArrayList<>();
     

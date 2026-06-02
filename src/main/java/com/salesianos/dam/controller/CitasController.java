@@ -42,7 +42,7 @@ public class CitasController {
         return medicoService.findByUsuario(principal.getName());
     }
 
-    // Muestra la pantalla con el listado general de citas de la clínica
+    // Muestra el listado de citas de la clínica
     // si ha entrado un médico solo le mostramos sus propias citas pero si entra un admin le mostramos todas las citas
     @GetMapping("/citas")
     public String citas(Model model, java.security.Principal principal) {
@@ -213,4 +213,7 @@ public class CitasController {
 
         return "citas/formulario-paso2";
     }
+
+    
+
 }

@@ -6,6 +6,7 @@ import com.salesianos.dam.Paciente;
 import com.salesianos.dam.enums.EstadosCita;
 import com.salesianos.dam.exception.PacienteConCitasActivasException;
 import com.salesianos.dam.repository.PacienteRepository;
+import java.util.List;
 
 @Service
 public class PacienteService extends BaseServiceImpl<Paciente, Long, PacienteRepository> {
@@ -16,7 +17,7 @@ public class PacienteService extends BaseServiceImpl<Paciente, Long, PacienteRep
             // buscamos entre todas sus citas para ver si alguna sigue como pendiente
             boolean tieneCitasActivas = paciente.getCitas().stream()
                 .anyMatch(cita -> cita.getEstado() == EstadosCita.PENDIENTE);
-            // Si tiene citas que aún no han pasado no dejamos borrarlo
+
             if (tieneCitasActivas) {
                 throw new PacienteConCitasActivasException();
             }
@@ -25,9 +26,10 @@ public class PacienteService extends BaseServiceImpl<Paciente, Long, PacienteRep
         super.deleteById(id);
     }
 
-    public java.util.List<Object[]> findPacientesMasFrecuentes() {
+    public List<Object[]> findPacientesMasFrecuentes() {
         return repository.findPacientesMasFrecuentes();
     }
+
 }
 
 
