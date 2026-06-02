@@ -55,9 +55,9 @@
                         <tr th:each="medico : ${medicos}">
                             <td class="ps-4 text-muted small fw-semibold" th:text="${medico.id}">1</td>
                             <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-light text-secondary rounded-circle p-2 me-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                                        <i class="bi bi-person-fill"></i>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-success bg-opacity-10 text-success rounded-circle fw-bold d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px; min-width: 38px;">
+                                        <span th:text="${#strings.isEmpty(medico.nombre) ? 'M' : #strings.substring(medico.nombre, 0, 1).toUpperCase()}">M</span>
                                     </div>
                                     <div>
                                         <span class="fw-semibold text-dark d-block" th:text="${medico.nombre}">Dr. Nombre</span>

@@ -36,39 +36,27 @@
                             <input type="hidden" th:field="*{usuario}">
                             <input type="hidden" th:field="*{password}">
 
-                            <div class="mb-3">
-                                <label for="nombre" class="form-label text-secondary small fw-semibold">Nombre Completo</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-person"></i></span>
-                                    <input type="text" id="nombre" th:field="*{nombre}" class="form-control border-start-0 ps-0" placeholder="ej. Dra. Ana Martínez" required>
-                                </div>
-                            </div>
+                             <div class="form-floating mb-3">
+                                 <input type="text" id="nombre" th:field="*{nombre}" class="form-control" placeholder="ej. Dra. Ana Martínez" required>
+                                 <label for="nombre" class="text-secondary"><i class="bi bi-person me-2"></i>Nombre Completo</label>
+                             </div>
 
-                            <div class="mb-3">
-                                <label for="especialidad" class="form-label text-secondary small fw-semibold">Especialidad Asistencial</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-award"></i></span>
-                                    <input type="text" id="especialidad" th:field="*{especialidad}" class="form-control border-start-0 ps-0" placeholder="ej. Pediatría / Dermatología" required>
-                                </div>
-                            </div>
+                             <div class="form-floating mb-3">
+                                 <input type="text" id="especialidad" th:field="*{especialidad}" class="form-control" placeholder="ej. Pediatría / Dermatología" required>
+                                 <label for="especialidad" class="text-secondary"><i class="bi bi-award me-2"></i>Especialidad Asistencial</label>
+                             </div>
 
-                            <div class="mb-3">
-                                <label for="duracionCitaMinutos" class="form-label text-secondary small fw-semibold">Duración Estándar de Consulta (minutos)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-clock"></i></span>
-                                    <input type="number" id="duracionCitaMinutos" th:field="*{duracionCitaMinutos}" class="form-control border-start-0 ps-0" min="5" step="5" required>
-                                </div>
-                                <div class="form-text text-muted small mt-1">Tiempo de consulta predeterminado en minutos (mínimo 5 min).</div>
-                            </div>
+                             <div class="form-floating mb-3">
+                                 <input type="number" id="duracionCitaMinutos" th:field="*{duracionCitaMinutos}" class="form-control" min="5" step="5" placeholder="30" required>
+                                 <label for="duracionCitaMinutos" class="text-secondary"><i class="bi bi-clock me-2"></i>Duración Estándar de Consulta (minutos)</label>
+                                 <div class="form-text text-muted small mt-1">Tiempo de consulta predeterminado en minutos (mínimo 5 min).</div>
+                             </div>
 
-                            <div class="mb-4">
-                                <label for="precioPorMinuto" class="form-label text-secondary small fw-semibold">Precio por Minuto (€)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-currency-euro"></i></span>
-                                    <input type="number" step="0.01" id="precioPorMinuto" th:field="*{precioPorMinuto}" class="form-control border-start-0 ps-0" min="0" required>
-                                </div>
-                                <div class="form-text text-muted small mt-1">Precio imputado por minuto de atención (se usa para calcular el coste de la cita).</div>
-                            </div>
+                             <div class="form-floating mb-4">
+                                 <input type="number" step="0.01" id="precioPorMinuto" th:field="*{precioPorMinuto}" class="form-control" min="0" placeholder="1.50" required>
+                                 <label for="precioPorMinuto" class="text-secondary"><i class="bi bi-currency-euro me-2"></i>Precio por Minuto (€)</label>
+                                 <div class="form-text text-muted small mt-1">Precio imputado por minuto de atención (se usa para calcular el coste de la cita).</div>
+                             </div>
 
                             <div class="d-flex justify-content-end gap-2 mt-5">
                                 <a href="/medicos" class="btn btn-outline-secondary px-4 py-2">Cancelar</a>
